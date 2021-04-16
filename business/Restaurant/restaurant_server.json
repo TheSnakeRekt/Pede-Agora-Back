@@ -1,0 +1,43 @@
+
+[
+    {
+        "uid":"9c609a87-ebea-42ba-821c-70e166a49935",
+        "name": "ALAMEDA PARK"
+    }, 
+    {
+        "uid":"9f1f18ca-79cc-4445-8469-d2e5fbd3e780",
+        "name": "JÁ CÁ ESTOU, E TU?"
+    },
+    {
+        "uid":"1c09142d-3df8-4336-b5d7-07c1631c7e02",
+        "name":"PIZZARIA DOM PIPAS"
+    },
+    {
+        "uid": "0cb3579f-6fe7-402b-bfc0-fdf46a517b86",
+        "name": "ETILENO BAR SNACK"
+    },
+    {
+        "uid":"b09e46b3-d4e7-4290-a62e-e1d0317be35b",
+        "name": "MCDONALDS"
+    },
+    {
+        "uid":"73d4d5c4-1eb3-4909-a339-1fd219661cf0",
+        "name":"PRINCIPE PARQUE"
+    },
+    {
+        "uid":"ded7bb2c-68c4-4faa-9b8f-cbc7d45e2682",
+        "name":"CHURRASQUEIRA TAIPENSE" 
+    },
+    {
+        "uid":"1dc925e0-255b-440e-8ab4-125cb56e2758",
+        "name":"ROIYARU SUSHI" 
+    },
+    {
+        "uid":"4b65fb88-d359-46b7-8c2d-bb5b3ebf5271",
+        "name":"CINECITTA SNACK BAR"
+    },
+    {
+        "uid": "5c08c496-69ad-4194-908f-9756cd4474e3",
+        "name": "LOJA DE CONVENIENCIA"
+    }
+]
