@@ -1,6 +1,4 @@
 const API_URL = `https://www.pede-agora.com/api/cart/init`;
-
-
 class REQUEST_BODY {
     restaurant_uid;
     payload = {};

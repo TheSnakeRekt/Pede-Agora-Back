@@ -1,12 +1,12 @@
 const {DataTypes, Model} = require("sequelize");
-const Produto_Menu = require("../Joins/Produto2Menu.join");
+const Categoria_Produto = require("../Joins/Categoria2Produto.join");
 
 class Produto extends Model {
     static init(con){
         return super.init({
             id:{
                 type:DataTypes.INTEGER, 
-                unique: 'compositeIndex',
+                autoIncrement: true,
                 primaryKey: true
             },
             nome:DataTypes.STRING,
@@ -33,7 +33,17 @@ class Produto extends Model {
 
     static associate(db){
         db.Produto.belongsTo(db.Restaurante);
-        db.Produto.belongsToMany(db.Menu, {through: Produto_Menu.define(db.sequelize)});
+        db.Produto.belongsToMany(db.Menu, {through: Categoria_Produto.define(db.sequelize)});
+    }
+
+    static async createOrUpdate(values){
+        return await this
+        .findOne({ where: values })
+        .then((obj) => {
+            if(obj)
+                return obj.update(values);
+            return this.create(values);
+        })
     }
 }
 

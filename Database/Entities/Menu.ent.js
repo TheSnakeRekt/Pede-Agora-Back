@@ -5,7 +5,7 @@ class Menu extends Model {
         return super.init({
             id:{
                 type:DataTypes.INTEGER, 
-                unique: 'compositeIndex',
+                autoIncrement: true,
                 primaryKey: true
             },
             valorCIva:{
@@ -30,7 +30,17 @@ class Menu extends Model {
 
     static associate(db){
         db.Menu.belongsTo(db.Restaurante);
-        db.Menu.hasMany(db.Produto);
+        db.Menu.hasMany(db.Categoria);
+    }
+
+    static async createOrUpdate(values){
+        return await this
+        .findOne({ where: values })
+        .then((obj) => {
+            if(obj)
+                return obj.update(values);
+            return this.create(values);
+        })
     }
 }
 

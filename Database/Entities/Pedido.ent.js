@@ -6,7 +6,7 @@ class Pedido extends Model {
         return super.init({
             id:{
                 type:DataTypes.INTEGER, 
-                unique: 'compositeIndex',
+                autoIncrement: true,
                 primaryKey: true
             },
             emCurso:DataTypes.BOOLEAN,
@@ -32,7 +32,17 @@ class Pedido extends Model {
     static associate(db) {
         db.Pedido.belongsTo(db.Cliente);
         db.Pedido.belongsTo(db.Restaurante);
-        db.Pedido.hasMany(db.PedidoDetalhes);
+        db.Pedido.belongsTo(db.PedidoDetalhes);
+    }
+    
+    static async createOrUpdate(values){
+        return await this
+        .findOne({ where: values })
+        .then((obj) => {
+            if(obj)
+                return obj.update(values);
+            return this.create(values);
+        })
     }
 }
 
@@ -41,7 +51,7 @@ class PedidoDetalhes extends Model {
         return super.init({
             id:{
                 type:DataTypes.INTEGER, 
-                unique: 'compositeIndex',
+                autoIncrement: true,
                 primaryKey: true
             },
             quantidade: DataTypes.INTEGER,
@@ -54,7 +64,7 @@ class PedidoDetalhes extends Model {
 
     static associate(db){
         db.PedidoDetalhes.hasMany(db.Menu);
-        db.PedidoDetalhes.belongsTo(db.Pedido);
+        db.PedidoDetalhes.hasMany(db.Pedido);
     }
 }
 

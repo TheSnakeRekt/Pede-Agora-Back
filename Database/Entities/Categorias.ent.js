@@ -1,6 +1,6 @@
 const {DataTypes, Model} = require("sequelize");
 
-class Restaurante extends Model {
+class Categoria extends Model {
     static init(con){
         return super.init({
             id:{
@@ -9,18 +9,14 @@ class Restaurante extends Model {
                 primaryKey: true
             },
             nome:DataTypes.STRING,
-            telefone:DataTypes.STRING,
-            uid:DataTypes.STRING,
-            cdn:DataTypes.STRING,
-            promo:{type:DataTypes.BOOLEAN, defaultValue:false}
+            descricao:DataTypes.STRING,
         }, {sequelize: con, timestamps:true});
     }
 
     static associate(db){
-        db.Restaurante.belongsTo(db.Morada);
-
-        db.Restaurante.hasMany(db.Pedido);
-        db.Restaurante.hasMany(db.Menu);
+        db.Categoria.belongsTo(db.Menu);
+        db.Categoria.hasMany(db.Produto);
+       // db.Categoria.hasMany(db.Grupos);
     }
 
     static async createOrUpdate(values){
@@ -34,4 +30,4 @@ class Restaurante extends Model {
     }
 }
 
-module.exports = Restaurante;
+module.exports = Categoria;

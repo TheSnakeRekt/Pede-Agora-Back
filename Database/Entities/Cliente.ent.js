@@ -1,12 +1,12 @@
 const {DataTypes, Model} = require("sequelize");
-
+const Cliente_Morada = require("../Joins/Cliente2Morada.join");
 class Cliente extends Model{
     static init(con) {
         return super.init(
             {
                 id:{
                     type:DataTypes.INTEGER, 
-                    unique: 'compositeIndex',
+                    autoIncrement: true,
                     primaryKey: true
                 },
                 nome:DataTypes.STRING,
@@ -18,8 +18,18 @@ class Cliente extends Model{
     }
 
     static associate(db) {
-        db.Cliente.hasMany(db.Morada);
+        db.Cliente.belongsToMany(db.Morada,{through:Cliente_Morada.define(db.sequelize)});
         db.Cliente.hasMany(db.Pedido);
+    }
+
+    static async createOrUpdate(values){
+        return await this
+        .findOne({ where: values })
+        .then((obj) => {
+            if(obj)
+                return obj.update(values);
+            return this.create(values);
+        })
     }
 }
 

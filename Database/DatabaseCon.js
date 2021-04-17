@@ -8,7 +8,7 @@ const con = new Sequelize('pedeagoratest', 'pedeagorauser' , 'bM3rJv5vKOg9xmu5',
         define: {
             freezeTableName: true
         },
-        logging:true
+        logging:false
     }
 );
 

@@ -1,12 +1,12 @@
 const {DataTypes, Model} = require("sequelize");
-
+const Entregador_Morada = require("../Joins/Entregador2Morada.join");
 class Entregador extends Model {
     static init(con) {
         return super.init(
             {
                 id:{
                     type:DataTypes.INTEGER, 
-                    unique: 'compositeIndex',
+                    autoIncrement: true,
                     primaryKey: true
                 },
                 pedidoAtual:DataTypes.INTEGER,
@@ -20,9 +20,19 @@ class Entregador extends Model {
     }
 
     static associate(db) {
-        db.Entregador.hasOne(db.Morada);
+        db.Entregador.belongsToMany(db.Morada,{through:Entregador_Morada.define(db.sequelize)});
         db.Entregador.hasOne(db.PosicaoEntregador);
         db.Entregador.hasMany(db.Pedido);
+    }
+
+    static async createOrUpdate(values){
+        return await this
+        .findOne({ where: values })
+        .then((obj) => {
+            if(obj)
+                return obj.update(values);
+            return this.create(values);
+        })
     }
 }
 
