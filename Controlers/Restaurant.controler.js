@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../Database/Database');
+const RestauranteService = require('../business/Restaurant/Restaurante.service');
 const app = express();
 
 
@@ -17,9 +17,9 @@ app.use((req,res,next)=>{
 });
 
 app.get('/restaurantes',async (req, res)=>{
-    db.Restaurante.findAll({ include:
-        [{ model: db.Morada }] }).then(data=>{
+    RestauranteService.findAll().then(data=>{
         res.send(data);
+        res.end();
     })
 });
 

@@ -11,7 +11,12 @@ class Restaurante extends Model {
             nome:DataTypes.STRING,
             telefone:DataTypes.STRING,
             uid:DataTypes.STRING,
+            tags:DataTypes.STRING,
+            logo:DataTypes.STRING,
             cdn:DataTypes.STRING,
+            cotacao:DataTypes.DECIMAL(2,1),
+            totalReviews:DataTypes.INTEGER,
+            timing:{type:DataTypes.STRING,defaultValue:'30-40min'},
             promo:{type:DataTypes.BOOLEAN, defaultValue:false}
         }, {sequelize: con, timestamps:true});
     }

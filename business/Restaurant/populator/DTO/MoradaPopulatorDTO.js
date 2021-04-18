@@ -1,4 +1,4 @@
-module.exports = class MoradaDTO {
+module.exports = class MoradaPopulatorDTO {
     static mapper(restauranteAccount, restaurantGEOIP){
         return {
             rua : restauranteAccount.street,
