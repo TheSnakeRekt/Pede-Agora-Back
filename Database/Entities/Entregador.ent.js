@@ -21,6 +21,7 @@ class Entregador extends Model {
 
     static associate(db) {
         db.Entregador.belongsToMany(db.Morada,{through:Entregador_Morada.define(db.sequelize)});
+        db.Entregador.belongsTo(db.Conta);
         db.Entregador.hasOne(db.PosicaoEntregador);
         db.Entregador.hasMany(db.Pedido);
     }

@@ -23,7 +23,7 @@ class Restaurante extends Model {
 
     static associate(db){
         db.Restaurante.belongsTo(db.Morada);
-
+        db.Restaurante.belongsTo(db.Conta);
         db.Restaurante.hasMany(db.Pedido);
         db.Restaurante.hasMany(db.Menu);
     }

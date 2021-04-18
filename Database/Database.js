@@ -8,11 +8,13 @@ const Restaurante = require('./Entities/Restaurante.ent');
 const Categoria = require('./Entities/Categorias.ent');
 
 const con = require('./DatabaseCon');
+const Conta = require('./Entities/Conta.ent');
 
 const db = {};
 
 db.sequelize = con;
 
+db.Conta= Conta;
 db.Cliente = Cliente;
 db.Menu = Menu;
 db.Categoria = Categoria;
@@ -24,6 +26,7 @@ db.Restaurante = Restaurante;
 db.PosicaoEntregador = PosicaoEntregador;
 db.PedidoDetalhes = PedidoDetalhes;
 
+Conta.init(con);
 Restaurante.init(con);
 Cliente.init(con);
 Morada.init(con);
@@ -35,6 +38,7 @@ Produto.init(con);
 PosicaoEntregador.init(con);
 PedidoDetalhes.init(con);
 
+Conta.associate(db);
 Cliente.associate(db);
 Morada.associate(db);
 Menu.associate(db);
@@ -47,7 +51,7 @@ PosicaoEntregador.associate(db);
 PedidoDetalhes.associate(db);
 
 
-db.sequelize.sync().catch(err=>{
+db.sequelize.sync({ alter: true }).catch(err=>{
     console.error(err.sql);
 });
 

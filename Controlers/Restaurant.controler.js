@@ -1,7 +1,6 @@
 const express = require('express');
-const RestauranteService = require('../business/Restaurant/Restaurante.service');
+const RestauranteService = require('../Business/Restaurant/Restaurante.service');
 const app = express();
-
 
 app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
@@ -23,4 +22,6 @@ app.get('/restaurantes',async (req, res)=>{
     })
 });
 
-app.listen(3000)
+app.listen(3000);
+
+module.exports = app;

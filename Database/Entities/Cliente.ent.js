@@ -1,5 +1,6 @@
 const {DataTypes, Model} = require("sequelize");
 const Cliente_Morada = require("../Joins/Cliente2Morada.join");
+
 class Cliente extends Model{
     static init(con) {
         return super.init(
@@ -20,6 +21,7 @@ class Cliente extends Model{
     static associate(db) {
         db.Cliente.belongsToMany(db.Morada,{through:Cliente_Morada.define(db.sequelize)});
         db.Cliente.hasMany(db.Pedido);
+        db.Cliente.belongsTo(db.Conta);
     }
 
     static async createOrUpdate(values){
