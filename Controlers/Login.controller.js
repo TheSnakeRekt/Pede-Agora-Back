@@ -1,22 +1,29 @@
 const AccountManagerService = require('../Business/Login/AccountManager.service');
-const ControlerServer = require('./ControllerServer');
+class LoginController {
 
-class LoginController  {
+    name = `Login Endpoint`;
 
     constructor(AccountManagerService){
         this.accountManagerService = AccountManagerService;
     }
 
-    loginRestAdapter(){
-        ControlerServer.app().get('/login', async (req, res) => {
-            this.accountManagerService.login(req.body.user).then(data => {
-                res.send(data);
+    loginRestAdapter(app){
+
+        app.post('/login',(req, res) => {
+            
+            this.accountManagerService.login(req.body).then(data => {
+                if(!data){
+                    res.send({error:`Invalid account or password`});
+                }else{
+                    res.send(data);
+                }
                 res.end();
             })
         });
 
-        ControlerServer.app().get('/signIn', async (req, res) => {
-            this.accountManagerService.signIn(req.body.user).then(data => {
+        app.post('/signIn',(req, res) => {
+        
+            this.accountManagerService.signIn(req.body).then(data => {
                 res.send(data);
                 res.end();
             })

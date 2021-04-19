@@ -1,14 +1,15 @@
 const RestauranteService = require('../Business/Restaurant/Restaurante.service');
-const ControllerServer = require('./ControllerServer');
-class RestaurantController  {
+class RestaurantController {
+
+    name = `Restaurant Endpoint`;
 
     constructor(RestauranteService){
         this.restaurantService = RestauranteService;
     }
 
-    restaurantRestAdapter(){
-        ControllerServer.app().get('/restaurantes',async (req, res)=>{
-            RestauranteService.findAll().then(data=>{
+    restaurantRestAdapter = (app) => {
+        app.get('/restaurantes', (req, res)=>{
+            this.restaurantService.findAll().then(data=>{
                 res.send(data);
                 res.end();
             })
