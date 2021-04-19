@@ -1,5 +1,6 @@
 const RestauranteDTO = require("../../DTO/RestauranteDTO");
 const db = require('../../Database/Database');
+const Morada = require("../../Database/Entities/Morada.ent");
 
 class RestauranteService {
     constructor(restauranteRepository){
@@ -8,7 +9,7 @@ class RestauranteService {
 
     async findAll(){
         this.restauranteRepository.sync();
-        const restaurantes = await this.restauranteRepository.findAll({include:db.Morada});
+        const restaurantes = await this.restauranteRepository.findAll({include:Morada});
      
         return restaurantes.map(RestauranteDTO.mapper);
     }

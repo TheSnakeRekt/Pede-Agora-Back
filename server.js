@@ -1,8 +1,9 @@
-const app = require('./Controlers/Restaurant.controler');
-
+const restaurantController = require('./Controlers/Restaurant.controler');
+const loginController = require('./Controlers/Login.controller');
 
 module.exports = class Server {
     static start(){
-        return app;
+        restaurantController.restaurantRestAdapter();
+        loginController.loginRestAdapter();
     }
 }
