@@ -21,9 +21,10 @@ class LoginController {
             })
         });
 
-        app.post('/signIn',(req, res) => {
-        
+        app.post('/signin',(req, res) => {
+            
             this.accountManagerService.signIn(req.body).then(data => {
+                console.log(data)
                 res.send(data);
                 res.end();
             })

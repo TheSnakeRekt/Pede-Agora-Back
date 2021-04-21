@@ -5,8 +5,8 @@ class Conta extends Model{
         return super.init({
             id:{
                 type: DataTypes.UUID,
-                defaultValue: Sequelize.UUID,
-                primaryKey:true
+                primaryKey:true,
+                defaultValue: DataTypes.UUIDV4
             },
             access:DataTypes.STRING,
             password:DataTypes.STRING

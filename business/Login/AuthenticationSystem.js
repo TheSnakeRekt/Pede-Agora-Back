@@ -15,7 +15,7 @@ class AuthenticationSystem {
 
     static async createPassword(inputPassword){
         try {
-            return await bcrypt.hash(inputPassword, JWT_SECRET);
+            return await bcrypt.hash(inputPassword, 12);
         } catch (error) {
             console.error(error);
         }

@@ -14,7 +14,7 @@ const db = {};
 
 db.sequelize = con;
 
-db.Conta= Conta;
+db.Conta = Conta;
 db.Cliente = Cliente;
 db.Menu = Menu;
 db.Categoria = Categoria;

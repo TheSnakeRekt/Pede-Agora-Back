@@ -3,15 +3,18 @@ const ContaDTO = require("../../DTO/ContaDTO");
 const UserDTO = require("../../DTO/UserDTO");
 const MoradaDTO = require("../../DTO/MoradaDTO");
 const AuthenticationSystem = require('./AuthenticationSystem');
+const SigninDTO = require('../../DTO/SigninDTO');
+const LocationFinderService = require('../Shared/LocationFinder.service');
 
 class AccountManagerService extends AuthenticationSystem {
 
 
-    constructor(contaRepository, clienteRepository, moradaRepository){
+    constructor(contaRepository, clienteRepository, moradaRepository, locationFinderService){
         super();
         this.contaRepository = contaRepository;
         this.clienteRepository = clienteRepository;
         this.moradaRepository = moradaRepository;
+        this.locationFinderService = locationFinderService;
     }
 
     async login(user){
@@ -23,18 +26,25 @@ class AccountManagerService extends AuthenticationSystem {
         return false;
     }
 
-    async signIn(user){
+    async signIn(data){
         this.contaRepository.sync();
-        let password = await super.createPassword(user.password);
-        let conta = await this.contaRepository.create(ContaDTO.mapper(password));
-        let userInstance = await this.clienteRepository.create(UserDTO.mapper(user));
+
+        let password = await AuthenticationSystem.createPassword(data.password);
+        let user = SigninDTO.mapper(data, password);
+        user.Morada.geo = await this.locationFinderService.findGeoLoc(user.Morada);
+        
+
+        let conta = await this.contaRepository.create(ContaDTO.mapper(user.Conta));
+        let userInstance = await this.clienteRepository.create(UserDTO.mapper(user.Utilizador));
         let morada = await this.moradaRepository.create(MoradaDTO.mapper(user.Morada));
-
-        await userInstance.setConta(conta);
-        await userInstance.setMorada(morada);
-
-        return UserDTO.mapper(userInstance);
+        
+        await userInstance.setContum(conta);
+        await userInstance.addMorada(morada);
+       
+        let userDTO = UserDTO.mapper(userInstance);
+        userDTO.morada = MoradaDTO.mapper(morada);
+        return userDTO;
     }
 }
 
-module.exports = new AccountManagerService(db.Conta, db.Cliente, db.Morada);
+module.exports = new AccountManagerService(db.Conta, db.Cliente, db.Morada, LocationFinderService);

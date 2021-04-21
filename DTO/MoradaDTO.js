@@ -4,11 +4,10 @@ module.exports = class MoradaDTO {
             rua: moradaEntity.rua, 
             codigoPostal: moradaEntity.codigoPostal,
             cidade: moradaEntity.cidade,
+            distrito: moradaEntity.distrito ? moradaEntity.distrito: '',
             pais: moradaEntity.pais,
-            geo:{
-                lat:moradaEntity.latitude,
-                lng:moradaEntity.longitude,
-            }
+            latitude:moradaEntity.geo ?  moradaEntity.geo.lat : moradaEntity.latitude,
+            longitude:moradaEntity.geo ? moradaEntity.geo.lng : moradaEntity.longitude
        };
     }
 }

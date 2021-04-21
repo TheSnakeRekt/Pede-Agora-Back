@@ -1,8 +1,8 @@
 module.exports = class ContaDTO {
-    static mapper(password){
+    static mapper(conta){
         return {
-            password: password,
-            access:`CLIENTE`
+            password: conta.password,
+            access: conta.access
         }
     }
 }
