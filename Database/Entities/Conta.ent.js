@@ -1,4 +1,4 @@
-const {DataTypes, Model, Sequelize} = require("sequelize");
+const {DataTypes, Model} = require("sequelize");
 
 class Conta extends Model{
     static init(con){
@@ -9,7 +9,9 @@ class Conta extends Model{
                 defaultValue: DataTypes.UUIDV4
             },
             access:DataTypes.STRING,
-            password:DataTypes.STRING
+            password:DataTypes.STRING,
+            verified:DataTypes.BOOLEAN,
+            verifyCode:DataTypes.STRING
         }, {sequelize: con, timestamps:true})
     }
 

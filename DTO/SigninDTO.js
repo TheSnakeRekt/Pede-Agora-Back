@@ -9,7 +9,7 @@ module.exports = class SigninDTO {
             },
             Conta: {
                 password: hash,
-                access:"USER"
+                access: "USER"
             },
             Morada:{
                 rua: signInInfo.morada, 

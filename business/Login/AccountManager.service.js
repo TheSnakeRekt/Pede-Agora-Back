@@ -5,21 +5,23 @@ const MoradaDTO = require("../../DTO/MoradaDTO");
 const AuthenticationSystem = require('./AuthenticationSystem');
 const SigninDTO = require('../../DTO/SigninDTO');
 const LocationFinderService = require('../Shared/LocationFinder.service');
+const AccountVerificationService = require('./AccountVerification.service');
 
 class AccountManagerService extends AuthenticationSystem {
 
 
-    constructor(contaRepository, clienteRepository, moradaRepository, locationFinderService){
+    constructor(contaRepository, clienteRepository, moradaRepository, locationFinderService, accountVerificationService){
         super();
         this.contaRepository = contaRepository;
         this.clienteRepository = clienteRepository;
         this.moradaRepository = moradaRepository;
         this.locationFinderService = locationFinderService;
+        this.accountVerificationService = accountVerificationService;
     }
 
     async login(user){
         this.clienteRepository.sync();
-        let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name},{telefone:user.name}]}, {include:this.contaRepository});
+        let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name}, {telefone:user.name}]}, {include:this.contaRepository});
         if(userInstance != null){
             return await super.authenticate(user.account.password, userInstance.password);
         }
@@ -33,18 +35,42 @@ class AccountManagerService extends AuthenticationSystem {
         let user = SigninDTO.mapper(data, password);
         user.Morada.geo = await this.locationFinderService.findGeoLoc(user.Morada);
         
+        if(await this.clienteRepository.findOne({$or:[{email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}]})){
+            return `Esta conta já existe`;
+        }
 
-        let conta = await this.contaRepository.create(ContaDTO.mapper(user.Conta));
+        let token = AuthenticationSystem.randomToken();
+        let conta = await this.contaRepository.create(ContaDTO.mapper(user.Conta, token));
         let userInstance = await this.clienteRepository.create(UserDTO.mapper(user.Utilizador));
         let morada = await this.moradaRepository.create(MoradaDTO.mapper(user.Morada));
         
         await userInstance.setContum(conta);
         await userInstance.addMorada(morada);
-       
+        
         let userDTO = UserDTO.mapper(userInstance);
         userDTO.morada = MoradaDTO.mapper(morada);
+
+        await this.accountVerificationService.sendEmailVerification(userInstance.email, userInstance.name, token);
+
+        userDTO.registered = true;
         return userDTO;
+    }
+
+    async verifyAccountEmail(token){
+        this.contaRepository.sync();
+        let conta = await this.contaRepository.findOne({where:{verifyCode:token, verified:false},raw:true})
+            
+        if(!conta.verified){
+            let [numberOfAffectedRows] = await this.contaRepository.update({verified:true, verifyCode:''},{where:{id:conta.id}});
+            return (numberOfAffectedRows >= 1);
+        }
+
+        return conta.verified;
+    }
+
+    async verifyAccountPhone(code, phone){
+
     }
 }
 
-module.exports = new AccountManagerService(db.Conta, db.Cliente, db.Morada, LocationFinderService);
+module.exports = new AccountManagerService(db.Conta, db.Cliente, db.Morada, LocationFinderService, AccountVerificationService);

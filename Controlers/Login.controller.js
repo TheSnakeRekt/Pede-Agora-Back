@@ -10,7 +10,6 @@ class LoginController {
     loginRestAdapter(app){
 
         app.post('/login',(req, res) => {
-            
             this.accountManagerService.login(req.body).then(data => {
                 if(!data){
                     res.send({error:`Invalid account or password`});
@@ -18,16 +17,30 @@ class LoginController {
                     res.send(data);
                 }
                 res.end();
-            })
+            });
         });
 
         app.post('/signin',(req, res) => {
-            
             this.accountManagerService.signIn(req.body).then(data => {
-                console.log(data)
                 res.send(data);
                 res.end();
-            })
+            });
+        });
+
+        app.get('/mailverify',(req, res) =>{
+            this.accountManagerService.verifyAccount(req.query.token).then(data=>{
+                console.log(data);
+                res.send(data);
+                res.end();
+            });
+        });
+
+        app.get('/phoneverify',(req, res) =>{
+            this.accountManagerService.verifyAccountPhone(req.body.codigo, req.body.telefone).then(data=>{
+                console.log(data);
+                res.send(data);
+                res.end();
+            });
         });
     }
 }
