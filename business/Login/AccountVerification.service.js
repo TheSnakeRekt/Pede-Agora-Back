@@ -4,6 +4,8 @@ const vonage = new Vonage({
   apiSecret: "Sr2mZsSPpXRCqoA1"
 });
 const nodemailer = require("nodemailer");
+const EmailBodyBuilder = require('../Shared/EmailBodyBuilder');
+
 /*const transporter = nodemailer.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
@@ -49,7 +51,7 @@ class AccountVerification {
 
     async sendEmailVerification(email, nome, url) {
         console.log(`http://localhost:3000/mailverify?token=${url}`)
-        let mailBody = new EmailBodyBuilder(nome,`http://localhost:3000/mailverify?token=${url}`).getMailBody();
+        let mailBody = EmailBodyBuilder.getMailBody(nome,`http://localhost:3000/mailverify?token=${url}`);
 
         /*let info = await transporter.sendMail({
             from: 'noreply@pede-agora.com', // sender address

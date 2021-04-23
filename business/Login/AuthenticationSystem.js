@@ -1,17 +1,25 @@
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs')
-const crypto = require('crypto')
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const JWT_SECRET = `0nHsn1*HrfFHa@hkC5pe20HHE5xTwh#P4u!%YWt%M#nhjpHxT5`;
 
 class AuthenticationSystem {
-    static async authenticate(inputPassword, instancePassword = '123'){
+    static async authenticate(inputPassword, instancePassword, user){
+        
         try {
-           let hashedInput = await bcrypt.hash(inputPassword, 12);
-           return await bcrypt.compare(instancePassword,hashedInput);
+           let isValid = await bcrypt.compare(inputPassword, instancePassword);
+
+           if(isValid){
+            return {
+                access:true,
+                token:jwt.sign(user, JWT_SECRET, { expiresIn: '2h' }),
+                account:user
+            }
+           }
         } catch (error) {
             console.error(error);
         }
-       
+        return {access:false};
     }
 
     static async createPassword(inputPassword){
@@ -24,6 +32,14 @@ class AuthenticationSystem {
 
     static randomToken(){
         return crypto.randomBytes(16).toString('hex');
+    }
+
+    static checkToken(header){
+        if(typeof header == 'undefined' || header == ''){
+            return false;
+        }
+
+        return jwt.verify(header, JWT_SECRET)
     }
 }
 

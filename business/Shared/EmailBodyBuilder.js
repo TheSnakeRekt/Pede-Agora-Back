@@ -1,6 +1,6 @@
 module.exports = class EmailBodyBuilder {
-    constructor(nome,url){
-        this.mailBody = `<tbody><tr>
+    static getMailBody(nome,url){
+       return `<tbody><tr>
         <td valign="top" id="m_4791388544738004316templateHeader" style="background-color:#262b32;background-image:none;background-repeat:no-repeat;padding-bottom:0;background-size:cover;border-top:0;border-bottom:0;padding-top:9px;background-position:center" bgcolor="#262b32" background="https://ci6.googleusercontent.com/proxy/9uIx1Nti7V8mlBL1cRK__wYQta5bvCO_arp6xmrR=s0-d-e1-ft#http://none"><table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse;min-width:100%">
                 <tbody>
                 <tr>
@@ -172,9 +172,5 @@ module.exports = class EmailBodyBuilder {
         </td>
     </tr>
 </tbody>`
-    }
-
-    getMailBody(){
-        return this.mailBody;
     }
 }

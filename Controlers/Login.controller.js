@@ -1,4 +1,5 @@
 const AccountManagerService = require('../Business/Login/AccountManager.service');
+
 class LoginController {
 
     name = `Login Endpoint`;
@@ -10,6 +11,11 @@ class LoginController {
     loginRestAdapter(app){
 
         app.post('/login',(req, res) => {
+            if(this.accountManagerService.checkToken(req.headers['x-access-token'])){
+                res.send(data);
+                res.end();
+            }
+
             this.accountManagerService.login(req.body).then(data => {
                 if(!data){
                     res.send({error:`Invalid account or password`});

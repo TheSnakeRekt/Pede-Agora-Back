@@ -21,11 +21,17 @@ class AccountManagerService extends AuthenticationSystem {
 
     async login(user){
         this.clienteRepository.sync();
-        let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name}, {telefone:user.name}]}, {include:this.contaRepository});
+        let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name}, {telefone:user.name}], raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
+
         if(userInstance != null){
-            return await super.authenticate(user.account.password, userInstance.password);
+            return await AuthenticationSystem.authenticate(user.account.password, userInstance.Contum.password, UserDTO.mapper(userInstance));
         }
+       
         return false;
+    }
+
+    checkToken(header){
+        return AuthenticationSystem.checkToken(header);
     }
 
     async signIn(data){
@@ -35,8 +41,10 @@ class AccountManagerService extends AuthenticationSystem {
         let user = SigninDTO.mapper(data, password);
         user.Morada.geo = await this.locationFinderService.findGeoLoc(user.Morada);
         
-        if(await this.clienteRepository.findOne({$or:[{email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}]})){
-            return `Esta conta já existe`;
+        let alreadyExists = await this.clienteRepository.findOne({$or:[{email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}]})
+        
+        if(alreadyExists){
+            return false;
         }
 
         let token = AuthenticationSystem.randomToken();
@@ -46,6 +54,8 @@ class AccountManagerService extends AuthenticationSystem {
         
         await userInstance.setContum(conta);
         await userInstance.addMorada(morada);
+        userInstance.MoradaId = morada.id;
+        await userInstance.save();
         
         let userDTO = UserDTO.mapper(userInstance);
         userDTO.morada = MoradaDTO.mapper(morada);
