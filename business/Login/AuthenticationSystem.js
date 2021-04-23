@@ -10,9 +10,9 @@ class AuthenticationSystem {
            let isValid = await bcrypt.compare(inputPassword, instancePassword);
 
            if(isValid){
+            user.token = jwt.sign(user, JWT_SECRET, { expiresIn: '2h' });
             return {
                 access:true,
-                token:jwt.sign(user, JWT_SECRET, { expiresIn: '2h' }),
                 account:user
             }
            }

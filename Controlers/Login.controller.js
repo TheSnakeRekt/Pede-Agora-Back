@@ -11,19 +11,25 @@ class LoginController {
     loginRestAdapter(app){
 
         app.post('/login',(req, res) => {
-            if(this.accountManagerService.checkToken(req.headers['x-access-token'])){
-                res.send(data);
-                res.end();
-            }
+            let data = this.accountManagerService.checkToken(req.headers['x-access-token']);
 
-            this.accountManagerService.login(req.body).then(data => {
-                if(!data){
-                    res.send({error:`Invalid account or password`});
-                }else{
-                    res.send(data);
-                }
+            if(data){
+                data.token = req.headers['x-access-token'];
+                res.send({
+                    access:true,
+                    account:data
+                });
                 res.end();
-            });
+            }else{
+                this.accountManagerService.login(req.body).then(account => {
+                    if(!account){
+                        res.send({error:`Invalid account or password`});
+                    }else{
+                        res.send(account);
+                    }
+                    res.end();
+                });
+            }
         });
 
         app.post('/signin',(req, res) => {

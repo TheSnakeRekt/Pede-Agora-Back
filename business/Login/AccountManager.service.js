@@ -20,13 +20,15 @@ class AccountManagerService extends AuthenticationSystem {
     }
 
     async login(user){
-        this.clienteRepository.sync();
-        let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name}, {telefone:user.name}], raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
-
-        if(userInstance != null){
-            return await AuthenticationSystem.authenticate(user.account.password, userInstance.Contum.password, UserDTO.mapper(userInstance));
+        if(user.name){
+            this.clienteRepository.sync();
+            let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name}, {telefone:user.name}], raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
+    
+            if(userInstance != null){
+                return await AuthenticationSystem.authenticate(user.account.password, userInstance.Contum.password, UserDTO.mapper(userInstance));
+            }  
         }
-       
+        
         return false;
     }
 
