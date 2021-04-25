@@ -6,6 +6,7 @@ const AuthenticationSystem = require('./AuthenticationSystem');
 const SigninDTO = require('../../DTO/SigninDTO');
 const LocationFinderService = require('../Shared/LocationFinder.service');
 const AccountVerificationService = require('./AccountVerification.service');
+const { Sequelize } = require('sequelize');
 
 class AccountManagerService extends AuthenticationSystem {
 
@@ -22,7 +23,7 @@ class AccountManagerService extends AuthenticationSystem {
     async login(user){
         if(user.name){
             this.clienteRepository.sync();
-            let userInstance = await this.clienteRepository.findOne({$or:[{email: user.name}, {telefone:user.name}], raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
+            let userInstance = await this.clienteRepository.find({where:Sequelize.or({email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}), raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
     
             if(userInstance != null){
                 return await AuthenticationSystem.authenticate(user.account.password, userInstance.Contum.password, UserDTO.mapper(userInstance));
@@ -42,9 +43,10 @@ class AccountManagerService extends AuthenticationSystem {
         let password = await AuthenticationSystem.createPassword(data.password);
         let user = SigninDTO.mapper(data, password);
         user.Morada.geo = await this.locationFinderService.findGeoLoc(user.Morada);
+     
+        let alreadyExists = await this.clienteRepository.findOne({where:Sequelize.or({email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}),raw:true});
         
-        let alreadyExists = await this.clienteRepository.findOne({$or:[{email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}]})
-        
+   
         if(alreadyExists){
             return false;
         }

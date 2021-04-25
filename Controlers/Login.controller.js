@@ -12,7 +12,6 @@ class LoginController {
 
         app.post('/login',(req, res) => {
             let data = this.accountManagerService.checkToken(req.headers['x-access-token']);
-
             if(data){
                 data.token = req.headers['x-access-token'];
                 res.send({
