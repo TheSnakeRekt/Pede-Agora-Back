@@ -23,7 +23,7 @@ class AccountManagerService extends AuthenticationSystem {
     async login(user){
         if(user.name){
             this.clienteRepository.sync();
-            let userInstance = await this.clienteRepository.find({where:Sequelize.or({email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}), raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
+            let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: user.name}, {telefone:user.name}), raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
     
             if(userInstance != null){
                 return await AuthenticationSystem.authenticate(user.account.password, userInstance.Contum.password, UserDTO.mapper(userInstance));
