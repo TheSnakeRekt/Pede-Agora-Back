@@ -38,8 +38,11 @@ class AuthenticationSystem {
         if(typeof header == 'undefined' || header == ''){
             return false;
         }
-
-        return jwt.verify(header, JWT_SECRET)
+        try {
+            return jwt.verify(header, JWT_SECRET);
+        } catch (error) {
+            return false;
+        }
     }
 }
 
