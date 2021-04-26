@@ -44,6 +44,11 @@ class AuthenticationSystem {
             return false;
         }
     }
+
+    static sign(user){
+        user.token = jwt.sign(user, JWT_SECRET, { expiresIn: '2h' })
+        return user;
+    }
 }
 
 module.exports = AuthenticationSystem;

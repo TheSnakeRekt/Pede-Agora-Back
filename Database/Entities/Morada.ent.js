@@ -16,6 +16,10 @@ class Morada extends Model {
             pais:DataTypes.STRING,
             latitude:DataTypes.STRING,
             longitude:DataTypes.STRING,
+            isRestaurant:{
+                type:DataTypes.BOOLEAN,
+                defaultValue:false
+            }
         }, {sequelize:con, timestamps:true});
     }
 

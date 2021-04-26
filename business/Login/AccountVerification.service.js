@@ -6,15 +6,15 @@ const vonage = new Vonage({
 const nodemailer = require("nodemailer");
 const EmailBodyBuilder = require('../Shared/EmailBodyBuilder');
 
-/*const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false, // true for 465, false for other ports
+const transporter = nodemailer.createTransport({
+    host: "mail.pedeagora.pt",
+    port: 465,
+    secure: true, // true for 465, false for other ports
     auth: {
-        user: testAccount.user, // generated ethereal user
-        pass: testAccount.pass, // generated ethereal password
+        user: `no-reply@pedeagora.pt`, // generated ethereal user
+        pass: `boJzmo0nQM2J`, // generated ethereal password
     },
-});*/
+});
 
 class AccountVerification {
     constructor(vonage){
@@ -53,12 +53,16 @@ class AccountVerification {
         console.log(`http://localhost:3000/mailverify?token=${url}`)
         let mailBody = EmailBodyBuilder.getMailBody(nome,`http://localhost:3000/mailverify?token=${url}`);
 
-        /*let info = await transporter.sendMail({
-            from: 'noreply@pede-agora.com', // sender address
+        await transporter.sendMail({
+            from: 'no-reply@pedeagora.pt', // sender address
             to: email, // list of receivers
             subject: "Pede Agora - Verificação de Conta", // Subject line
             html: mailBody, // html body
-        });*/
+        }).then(data=>{
+          console.log('Mail Enviado')
+        }).catch(e=>{
+          console.error("Erro Mail: ",e);
+        });
     }
 
     

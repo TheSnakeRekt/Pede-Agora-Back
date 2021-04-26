@@ -61,13 +61,15 @@ class AccountManagerService extends AuthenticationSystem {
         userInstance.MoradaId = morada.id;
         await userInstance.save();
         
-        let userDTO = UserDTO.mapper(userInstance);
+        let userDTO = AuthenticationSystem.sign(UserDTO.mapper(userInstance));
         userDTO.morada = MoradaDTO.mapper(morada);
 
-        await this.accountVerificationService.sendEmailVerification(userInstance.email, userInstance.name, token);
+        this.accountVerificationService.sendEmailVerification(userInstance.email, userInstance.nome, token);
 
-        userDTO.registered = true;
-        return userDTO;
+        return {
+            access:true,
+            account:userDTO
+        };
     }
 
     async verifyAccountEmail(token){
