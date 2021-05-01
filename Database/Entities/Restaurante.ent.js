@@ -13,10 +13,11 @@ class Restaurante extends Model {
             uid:DataTypes.STRING,
             tags:DataTypes.STRING,
             logo:DataTypes.STRING,
+            desktop_widget:DataTypes.STRING,
             cdn:DataTypes.STRING,
             cotacao:DataTypes.DECIMAL(2,1),
             totalReviews:DataTypes.INTEGER,
-            timing:{type:DataTypes.STRING,defaultValue:'30-40min'},
+            timing:{type:DataTypes.STRING, defaultValue:'30-40min'},
             promo:{type:DataTypes.BOOLEAN, defaultValue:false}
         }, {sequelize: con, timestamps:true});
     }
@@ -30,8 +31,9 @@ class Restaurante extends Model {
 
     static async createOrUpdate(values){
         return await this
-        .findOne({ where: values })
+        .findOne({where:{uid:values.uid}})
         .then((obj) => {
+            console.log(values)
             if(obj)
                 return obj.update(values);
             return this.create(values);

@@ -75,7 +75,10 @@ class AccountManagerService extends AuthenticationSystem {
     async verifyAccountEmail(token){
         this.contaRepository.sync();
         let conta = await this.contaRepository.findOne({where:{verifyCode:token, verified:false},raw:true})
-            
+        if(!conta){
+            return false;
+        }
+        
         if(!conta.verified){
             let [numberOfAffectedRows] = await this.contaRepository.update({verified:true, verifyCode:''},{where:{id:conta.id}});
             return (numberOfAffectedRows >= 1);

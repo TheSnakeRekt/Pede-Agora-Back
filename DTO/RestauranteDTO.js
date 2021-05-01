@@ -6,10 +6,12 @@ module.exports = class RestauranteDTO {
         telefone:restauranteEntity.telefone,
         tags:restauranteEntity.tags.split(","),
         logo:`../assets/${restauranteEntity.logo}`,
+        cdn:restauranteEntity.cdn,
         promo:restauranteEntity.promo,
         stars:restauranteEntity.cotacao,
         totalReviews:restauranteEntity.totalReviews,
         timing: restauranteEntity.timing,
+        desktop_widget: restauranteEntity.desktop_widget,
         morada:{
             rua:`${restauranteEntity.Morada.rua}, ${restauranteEntity.Morada.codigoPostal} ${restauranteEntity.Morada.cidade}`,
             pais: restauranteEntity.Morada.pais,

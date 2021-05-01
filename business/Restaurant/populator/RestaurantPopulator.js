@@ -21,9 +21,9 @@ const RestaurantePopulatorDTO = require("./DTO/RestaurantePopulatorDTO");
             } catch (error) {
                 console.log(error)
             }
-        });
+        })
         
-    }) 
-    console.log("done")
+    });
+   
 })();
 

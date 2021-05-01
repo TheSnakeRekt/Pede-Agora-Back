@@ -39,9 +39,8 @@ class LoginController {
         });
 
         app.get('/mailverify',(req, res) =>{
-            this.accountManagerService.verifyAccount(req.query.token).then(data=>{
-                console.log(data);
-                res.send(data);
+            this.accountManagerService.verifyAccountEmail(req.query.token).then(data=>{
+                res.redirect("http://localhost:4200?mailWasVerified="+data);
                 res.end();
             });
         });

@@ -226,12 +226,20 @@ function (_AuthenticationSystem) {
             case 3:
               conta = _context3.sent;
 
-              if (conta.verified) {
-                _context3.next = 11;
+              if (conta) {
+                _context3.next = 6;
                 break;
               }
 
-              _context3.next = 7;
+              return _context3.abrupt("return", false);
+
+            case 6:
+              if (conta.verified) {
+                _context3.next = 13;
+                break;
+              }
+
+              _context3.next = 9;
               return regeneratorRuntime.awrap(this.contaRepository.update({
                 verified: true,
                 verifyCode: ''
@@ -241,16 +249,16 @@ function (_AuthenticationSystem) {
                 }
               }));
 
-            case 7:
+            case 9:
               _ref = _context3.sent;
               _ref2 = _slicedToArray(_ref, 1);
               numberOfAffectedRows = _ref2[0];
               return _context3.abrupt("return", numberOfAffectedRows >= 1);
 
-            case 11:
+            case 13:
               return _context3.abrupt("return", conta.verified);
 
-            case 12:
+            case 14:
             case "end":
               return _context3.stop();
           }

@@ -1,6 +1,6 @@
 
 const Sequelize = require('sequelize');
-const con = new Sequelize('pedeagoratest', 'pedeagorauser' , 'bM3rJv5vKOg9xmu5',{
+const con = new Sequelize('pedeagora', 'pedeagorauser' , 'bM3rJv5vKOg9xmu5',{
         host:'localhost',
         dialect:'mariadb',
         logging:false
