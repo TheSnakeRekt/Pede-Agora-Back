@@ -1,6 +1,6 @@
 const {DataTypes, Model} = require("sequelize");
 
-class Categoria extends Model {
+class Opcao extends Model{
     static init(con){
         return super.init({
             id:{
@@ -8,21 +8,24 @@ class Categoria extends Model {
                 autoIncrement: true,
                 primaryKey: true
             },
-            nome:DataTypes.STRING,
-            descricao:DataTypes.STRING,
+            preco:{
+                type:DataTypes.DECIMAL(4, 2),
+                defaultValue: 0.00
+            },
+            default:{type:DataTypes.BOOLEAN, defaultValue:false},
+            nome:DataTypes.STRING
         }, {sequelize: con, timestamps:true});
     }
 
     static associate(db){
-        db.Categoria.belongsTo(db.Menu);
-        db.Categoria.hasMany(db.Produto);
-       // db.Categoria.hasMany(db.Grupos);
+        db.Opcao.belongsTo(db.Grupo);
     }
 
     static async createOrUpdate(values){
         return await this
-        .findOne({ where: values })
+        .findOne({where:{id:values.id}})
         .then((obj) => {
+            console.log(values)
             if(obj)
                 return obj.update(values);
             return this.create(values);
@@ -30,4 +33,4 @@ class Categoria extends Model {
     }
 }
 
-module.exports = Categoria;
+module.exports = Opcao;

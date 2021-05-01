@@ -9,23 +9,24 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 module.exports =
 /*#__PURE__*/
 function () {
-  function RestaurantePopulatorDTO() {
-    _classCallCheck(this, RestaurantePopulatorDTO);
+  function ProdutoPopulatorDTO() {
+    _classCallCheck(this, ProdutoPopulatorDTO);
   }
 
-  _createClass(RestaurantePopulatorDTO, null, [{
+  _createClass(ProdutoPopulatorDTO, null, [{
     key: "mapper",
-    value: function mapper(restauranteData, uidRest) {
+    value: function mapper(data, foto) {
       return {
-        nome: restauranteData.order.restaurant_name,
-        telefone: restauranteData.restaurant.phone,
-        tags: restauranteData.restaurant.cuisines,
-        cdn: restauranteData.restaurant.cdn_base_path,
-        desktop_widget: restauranteData.restaurant.pictures.desktop_widget.filename,
-        uid: uidRest
+        id: data.id,
+        nome: data.name,
+        descricao: data.description,
+        valorCIva: data.price,
+        valorSIva: data.price,
+        tags: JSON.stringify(data.tags),
+        foto: foto ? foto : ''
       };
     }
   }]);
 
-  return RestaurantePopulatorDTO;
+  return ProdutoPopulatorDTO;
 }();

@@ -45,6 +45,8 @@ var AccountVerificationService = require('./AccountVerification.service');
 var _require = require('sequelize'),
     Sequelize = _require.Sequelize;
 
+var Categoria = require('../../Database/Entities/Categoria.ent');
+
 var AccountManagerService =
 /*#__PURE__*/
 function (_AuthenticationSystem) {

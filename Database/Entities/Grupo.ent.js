@@ -1,6 +1,6 @@
 const {DataTypes, Model} = require("sequelize");
 
-class Menu extends Model {
+class Grupo extends Model {
     static init(con){
         return super.init({
             id:{
@@ -8,18 +8,21 @@ class Menu extends Model {
                 autoIncrement: true,
                 primaryKey: true
             },
-            uid:DataTypes.STRING,
+            force_max:DataTypes.INTEGER,
+            force_min:DataTypes.INTEGER,
+            required:{type:DataTypes.BOOLEAN, defaultValue:false},
+            nome:DataTypes.STRING
         }, {sequelize: con, timestamps:true});
     }
 
     static associate(db){
-        db.Menu.belongsTo(db.Restaurante);
-        db.Menu.hasMany(db.Categoria);
+        db.Grupo.belongsTo(db.Categoria);
+        db.Grupo.hasMany(db.Opcao);
     }
 
     static async createOrUpdate(values){
         return await this
-        .findOne({ where: values })
+        .findOne({where:{id:values.id}})
         .then((obj) => {
             if(obj)
                 return obj.update(values);
@@ -28,4 +31,4 @@ class Menu extends Model {
     }
 }
 
-module.exports = Menu;
+module.exports = Grupo;

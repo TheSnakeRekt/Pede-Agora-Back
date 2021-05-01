@@ -1,21 +1,35 @@
-const Cliente = require('./Entities/Cliente.ent')
-const { Entregador, PosicaoEntregador } = require('./Entities/Entregador.ent');
-const Menu = require('./Entities/Menu.ent');
-const Morada = require('./Entities/Morada.ent');
-const { Pedido, PedidoDetalhes } = require('./Entities/Pedido.ent');
-const Produto = require('./Entities/Produto.ent');
-const Restaurante = require('./Entities/Restaurante.ent');
-const Categoria = require('./Entities/Categoria.ent');
-const Grupo = require('./Entities/Grupo.ent');
+"use strict";
 
-const con = require('./DatabaseCon');
-const Conta = require('./Entities/Conta.ent');
-const Opcao = require('./Entities/Opcao.ent');
+var Cliente = require('./Entities/Cliente.ent');
 
-const db = {};
+var _require = require('./Entities/Entregador.ent'),
+    Entregador = _require.Entregador,
+    PosicaoEntregador = _require.PosicaoEntregador;
 
+var Menu = require('./Entities/Menu.ent');
+
+var Morada = require('./Entities/Morada.ent');
+
+var _require2 = require('./Entities/Pedido.ent'),
+    Pedido = _require2.Pedido,
+    PedidoDetalhes = _require2.PedidoDetalhes;
+
+var Produto = require('./Entities/Produto.ent');
+
+var Restaurante = require('./Entities/Restaurante.ent');
+
+var Categoria = require('./Entities/Categoria.ent');
+
+var Grupo = require('./Entities/Grupo.ent');
+
+var con = require('./DatabaseCon');
+
+var Conta = require('./Entities/Conta.ent');
+
+var Opcao = require('./Entities/Opcao.ent');
+
+var db = {};
 db.sequelize = con;
-
 db.Conta = Conta;
 db.Cliente = Cliente;
 db.Menu = Menu;
@@ -29,7 +43,6 @@ db.PosicaoEntregador = PosicaoEntregador;
 db.PedidoDetalhes = PedidoDetalhes;
 db.Grupo = Grupo;
 db.Opcao = Opcao;
-
 Conta.init(con);
 Restaurante.init(con);
 Cliente.init(con);
@@ -43,7 +56,6 @@ PosicaoEntregador.init(con);
 PedidoDetalhes.init(con);
 Grupo.init(con);
 Opcao.init(con);
-
 Conta.associate(db);
 Cliente.associate(db);
 Morada.associate(db);
@@ -57,9 +69,9 @@ PosicaoEntregador.associate(db);
 PedidoDetalhes.associate(db);
 Grupo.associate(db);
 Opcao.associate(db);
-
-db.sequelize.sync({ alter: true }).catch(err=>{
-    console.error(err.sql);
+db.sequelize.sync({
+  alter: true
+})["catch"](function (err) {
+  console.error(err.sql);
 });
-
 module.exports = db;

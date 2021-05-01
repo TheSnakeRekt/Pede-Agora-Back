@@ -20,17 +20,18 @@ class Produto extends Model {
                 defaultValue: 0.00
             },
             tags:DataTypes.STRING,
+            descricao:DataTypes.TEXT,
         }, {sequelize: con, timestamps:true});
     }
 
     static associate(db){
         db.Produto.belongsTo(db.Restaurante);
-        db.Produto.belongsToMany(db.Menu, {through: Categoria_Produto.define(db.sequelize)});
+        db.Produto.belongsToMany(db.Categoria, {through: Categoria_Produto.define(db.sequelize)});
     }
 
     static async createOrUpdate(values){
         return await this
-        .findOne({ where: values })
+        .findOne({ where: {id:values.id} })
         .then((obj) => {
             if(obj)
                 return obj.update(values);

@@ -7,6 +7,7 @@ const SigninDTO = require('../../DTO/SigninDTO');
 const LocationFinderService = require('../Shared/LocationFinder.service');
 const AccountVerificationService = require('./AccountVerification.service');
 const { Sequelize } = require('sequelize');
+const Categoria = require('../../Database/Entities/Categoria.ent');
 
 class AccountManagerService extends AuthenticationSystem {
 

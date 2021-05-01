@@ -26,43 +26,40 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
-var Restaurante =
+var Categoria_Produto = require("../Joins/Categoria2Produto.join");
+
+var Produto =
 /*#__PURE__*/
 function (_Model) {
-  _inherits(Restaurante, _Model);
+  _inherits(Produto, _Model);
 
-  function Restaurante() {
-    _classCallCheck(this, Restaurante);
+  function Produto() {
+    _classCallCheck(this, Produto);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Restaurante).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Produto).apply(this, arguments));
   }
 
-  _createClass(Restaurante, null, [{
+  _createClass(Produto, null, [{
     key: "init",
     value: function init(con) {
-      return _get(_getPrototypeOf(Restaurante), "init", this).call(this, {
+      return _get(_getPrototypeOf(Produto), "init", this).call(this, {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true
         },
         nome: DataTypes.STRING,
-        telefone: DataTypes.STRING,
-        uid: DataTypes.STRING,
-        tags: DataTypes.STRING,
-        logo: DataTypes.STRING,
-        desktop_widget: DataTypes.STRING,
-        cdn: DataTypes.STRING,
-        cotacao: DataTypes.DECIMAL(2, 1),
-        totalReviews: DataTypes.INTEGER,
-        timing: {
-          type: DataTypes.STRING,
-          defaultValue: '30-40min'
+        foto: DataTypes.STRING,
+        valorSIva: {
+          type: DataTypes.DECIMAL(4, 2),
+          defaultValue: 0.00
         },
-        promo: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: false
-        }
+        valorCIva: {
+          type: DataTypes.DECIMAL(4, 2),
+          defaultValue: 0.00
+        },
+        tags: DataTypes.STRING,
+        descricao: DataTypes.TEXT
       }, {
         sequelize: con,
         timestamps: true
@@ -71,10 +68,10 @@ function (_Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.Restaurante.belongsTo(db.Morada);
-      db.Restaurante.belongsTo(db.Conta);
-      db.Restaurante.hasMany(db.Pedido);
-      db.Restaurante.hasMany(db.Menu);
+      db.Produto.belongsTo(db.Restaurante);
+      db.Produto.belongsToMany(db.Categoria, {
+        through: Categoria_Produto.define(db.sequelize)
+      });
     }
   }, {
     key: "createOrUpdate",
@@ -88,7 +85,7 @@ function (_Model) {
               _context.next = 2;
               return regeneratorRuntime.awrap(this.findOne({
                 where: {
-                  uid: values.uid
+                  id: values.id
                 }
               }).then(function (obj) {
                 if (obj) return obj.update(values);
@@ -107,7 +104,7 @@ function (_Model) {
     }
   }]);
 
-  return Restaurante;
+  return Produto;
 }(Model);
 
-module.exports = Restaurante;
+module.exports = Produto;

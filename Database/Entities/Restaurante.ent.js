@@ -33,7 +33,6 @@ class Restaurante extends Model {
         return await this
         .findOne({where:{uid:values.uid}})
         .then((obj) => {
-            console.log(values)
             if(obj)
                 return obj.update(values);
             return this.create(values);
