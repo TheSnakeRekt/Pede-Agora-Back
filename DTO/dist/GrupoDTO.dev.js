@@ -6,24 +6,28 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var OpcaoDTO = require("./OpcaoDTO");
+
 module.exports =
 /*#__PURE__*/
 function () {
-  function CategoriaPopulatorDTO() {
-    _classCallCheck(this, CategoriaPopulatorDTO);
+  function GrupoDTO() {
+    _classCallCheck(this, GrupoDTO);
   }
 
-  _createClass(CategoriaPopulatorDTO, null, [{
+  _createClass(GrupoDTO, null, [{
     key: "mapper",
-    value: function mapper(data, file) {
+    value: function mapper(data) {
       return {
-        id: data.id,
-        nome: data.name,
-        descricao: data.description,
-        foto: file
+        id: data.get('id'),
+        required: data.get('required'),
+        force_max: data.get('force_max'),
+        force_min: data.get('force_min'),
+        nome: data.get('nome'),
+        opcoes: data.get('Opcaos').map(OpcaoDTO.mapper)
       };
     }
   }]);
 
-  return CategoriaPopulatorDTO;
+  return GrupoDTO;
 }();

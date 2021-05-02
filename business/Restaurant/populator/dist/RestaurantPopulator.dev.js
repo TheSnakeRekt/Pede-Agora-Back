@@ -150,6 +150,14 @@ var MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
 
                                 case 2:
                                   groupInstance = _context3.sent;
+                                  _context3.next = 5;
+                                  return regeneratorRuntime.awrap(cat.addGrupo(groupInstance));
+
+                                case 5:
+                                  _context3.next = 7;
+                                  return regeneratorRuntime.awrap(groupInstance.setCategorium(cat));
+
+                                case 7:
                                   group.options.forEach(function _callee2(option) {
                                     var optionInstance;
                                     return regeneratorRuntime.async(function _callee2$(_context2) {
@@ -172,7 +180,7 @@ var MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
                                     });
                                   });
 
-                                case 4:
+                                case 8:
                                 case "end":
                                   return _context3.stop();
                               }

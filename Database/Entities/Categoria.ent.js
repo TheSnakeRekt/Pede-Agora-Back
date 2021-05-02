@@ -18,6 +18,7 @@ class Categoria extends Model {
     static associate(db){
         db.Categoria.belongsTo(db.Menu);
         db.Categoria.hasMany(db.Produto);
+        db.Categoria.hasMany(db.Grupo);
     }
 
     static async createOrUpdate(values){

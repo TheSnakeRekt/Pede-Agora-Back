@@ -22,4 +22,10 @@ module.exports = class RestauranteDTO {
         }
        };
     }
+
+    static mealMapper(restauranteEntity){
+        return{
+            
+        }
+    }
 }

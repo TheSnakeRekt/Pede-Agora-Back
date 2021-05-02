@@ -69,7 +69,9 @@ const MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
                         });
 
                         groups.forEach(async group=>{
-                            let groupInstance = await db.Grupo.createOrUpdate(GrupoPopulatorDTO.mapper(group));
+                            const groupInstance = await db.Grupo.createOrUpdate(GrupoPopulatorDTO.mapper(group));
+                            await cat.addGrupo(groupInstance)
+                            await groupInstance.setCategorium(cat);
 
                             group.options.forEach(async option=>{
                                 let optionInstance = await db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(option));

@@ -1,17 +1,42 @@
 const RestauranteDTO = require("../../DTO/RestauranteDTO");
+const MenuDTO = require('../../DTO/MenuDTO');
+
 const db = require('../../Database/Database');
-const Morada = require("../../Database/Entities/Morada.ent");
 
 class RestauranteService {
-    constructor(restauranteRepository){
+    constructor(restauranteRepository, menuRepository){
         this.restauranteRepository = restauranteRepository;
+        this.menuRepository = menuRepository;
     }
 
     async findAll(){
         this.restauranteRepository.sync();
-        const restaurantes = await this.restauranteRepository.findAll({include:Morada});
-     
+        const restaurantes = await this.restauranteRepository.findAll({include:db.Morada});
+        
         return restaurantes.map(RestauranteDTO.mapper);
+    }
+
+    async findOne(id){
+        this.menuRepository.sync();
+        const meals = await this.menuRepository.findOne({where:{RestauranteId:id}, 
+            include:{
+                model:db.Categoria,
+                required:true,
+                include:[{
+                    model:db.Produto,
+                    required:true
+                },{
+                    model:db.Grupo,
+                    required:false,
+                    include:{
+                        model:db.Opcao,
+                        required:true
+                    }
+                }]
+            }
+        });
+
+        return meals.get('Categoria').map(MenuDTO.mapper);
     }
 
     async addRestaurante(data){
@@ -19,4 +44,4 @@ class RestauranteService {
     }
 }
 
-module.exports = new RestauranteService(db.Restaurante);
+module.exports = new RestauranteService(db.Restaurante, db.Menu);

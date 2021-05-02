@@ -8,12 +8,17 @@ class RestaurantController {
     }
 
     restaurantRestAdapter = (app) => {
-        app.get('/restaurantes', (req, res)=>{
-            this.restaurantService.findAll().then(data=>{
-                res.send(data);
-                res.end();
-            })
-        })
+        app.get('/restaurantes', async (req, res)=>{
+           const data = await this.restaurantService.findAll();
+           res.send(data);
+           res.end()
+        });
+
+        app.get('/restaurantes/:restaurantId/meals', async (req,res)=>{
+            const data = await this.restaurantService.findOne(req.params.restaurantId);
+            res.send(data);
+            res.end();
+        });
     }
 }
 

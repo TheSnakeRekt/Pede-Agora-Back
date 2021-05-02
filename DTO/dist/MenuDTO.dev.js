@@ -6,27 +6,30 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var GrupoDTO = require("./GrupoDTO");
+
+var ProdutoDTO = require("./ProdutoDTO");
+
 module.exports =
 /*#__PURE__*/
 function () {
-  function ProdutoPopulatorDTO() {
-    _classCallCheck(this, ProdutoPopulatorDTO);
+  function MenuDTO() {
+    _classCallCheck(this, MenuDTO);
   }
 
-  _createClass(ProdutoPopulatorDTO, null, [{
+  _createClass(MenuDTO, null, [{
     key: "mapper",
-    value: function mapper(data, foto) {
+    value: function mapper(data) {
       return {
-        id: data.id,
-        nome: data.name,
-        descricao: data.description,
-        valorCIva: data.price,
-        valorSIva: data.price,
-        tags: JSON.stringify(data.tags),
-        foto: foto ? foto : ''
+        id: data.get('id'),
+        nome: data.get('nome'),
+        active: data.get('active'),
+        foto: data.get('foto'),
+        grupos: data.get('Grupos') ? data.get('Grupos').map(GrupoDTO.mapper) : [],
+        produtos: data.get('Produtos').map(ProdutoDTO.mapper)
       };
     }
   }]);
 
-  return ProdutoPopulatorDTO;
+  return MenuDTO;
 }();
