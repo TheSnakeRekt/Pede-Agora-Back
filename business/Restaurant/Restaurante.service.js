@@ -17,7 +17,15 @@ class RestauranteService {
     }
 
     async findOne(id){
+        this.restauranteRepository.sync();
+        const restaurante = await this.restauranteRepository.findOne({where:{id:id},include:db.Morada});
+        
+        return RestauranteDTO.mapper(restaurante);
+    }
+
+    async findOneWithMeals(id){
         this.menuRepository.sync();
+        const rest = await this.restauranteRepository.findOne({where:{id:id},raw:true})
         const meals = await this.menuRepository.findOne({where:{RestauranteId:id}, 
             include:{
                 model:db.Categoria,
@@ -35,8 +43,7 @@ class RestauranteService {
                 }]
             }
         });
-
-        return meals.get('Categoria').map(MenuDTO.mapper);
+        return meals.get('Categoria').map(cat=>MenuDTO.mapper(cat,rest.cdn));
     }
 
     async addRestaurante(data){

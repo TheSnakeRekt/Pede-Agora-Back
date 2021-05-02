@@ -50,13 +50,51 @@ function () {
   }, {
     key: "findOne",
     value: function findOne(id) {
-      var meals;
+      var restaurante;
       return regeneratorRuntime.async(function findOne$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              this.menuRepository.sync();
+              this.restauranteRepository.sync();
               _context2.next = 3;
+              return regeneratorRuntime.awrap(this.restauranteRepository.findOne({
+                where: {
+                  id: id
+                },
+                include: db.Morada
+              }));
+
+            case 3:
+              restaurante = _context2.sent;
+              return _context2.abrupt("return", RestauranteDTO.mapper(restaurante));
+
+            case 5:
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, null, this);
+    }
+  }, {
+    key: "findOneWithMeals",
+    value: function findOneWithMeals(id) {
+      var rest, meals;
+      return regeneratorRuntime.async(function findOneWithMeals$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              this.menuRepository.sync();
+              _context3.next = 3;
+              return regeneratorRuntime.awrap(this.restauranteRepository.findOne({
+                where: {
+                  id: id
+                },
+                raw: true
+              }));
+
+            case 3:
+              rest = _context3.sent;
+              _context3.next = 6;
               return regeneratorRuntime.awrap(this.menuRepository.findOne({
                 where: {
                   RestauranteId: id
@@ -78,13 +116,15 @@ function () {
                 }
               }));
 
-            case 3:
-              meals = _context2.sent;
-              return _context2.abrupt("return", meals.get('Categoria').map(MenuDTO.mapper));
+            case 6:
+              meals = _context3.sent;
+              return _context3.abrupt("return", meals.get('Categoria').map(function (cat) {
+                return MenuDTO.mapper(cat, rest.cdn);
+              }));
 
-            case 5:
+            case 8:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
       }, null, this);
@@ -92,19 +132,19 @@ function () {
   }, {
     key: "addRestaurante",
     value: function addRestaurante(data) {
-      return regeneratorRuntime.async(function addRestaurante$(_context3) {
+      return regeneratorRuntime.async(function addRestaurante$(_context4) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
-              _context3.next = 2;
+              _context4.next = 2;
               return regeneratorRuntime.awrap(this.restauranteRepository.create());
 
             case 2:
-              return _context3.abrupt("return", _context3.sent);
+              return _context4.abrupt("return", _context4.sent);
 
             case 3:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }
       }, null, this);

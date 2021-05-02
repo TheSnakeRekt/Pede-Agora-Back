@@ -14,8 +14,15 @@ class RestaurantController {
            res.end()
         });
 
-        app.get('/restaurantes/:restaurantId/meals', async (req,res)=>{
+        app.get('/restaurantes/:restaurantId', async (req,res)=>{
+            console.log(req.params.restaurantId);
             const data = await this.restaurantService.findOne(req.params.restaurantId);
+            res.send(data);
+            res.end();
+        });
+
+        app.get('/restaurantes/:restaurantId/meals', async (req,res)=>{
+            const data = await this.restaurantService.findOneWithMeals(req.params.restaurantId);
             res.send(data);
             res.end();
         });
