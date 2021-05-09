@@ -10,7 +10,7 @@ module.exports = class MenuDTO {
             active:data.get('active'),
             foto:data.get('foto')?`${cdn}${data.get('foto')}`:'',
             grupos: data.get('Grupos')? data.get('Grupos').map(GrupoDTO.mapper):[],
-            produtos:data.get('Produtos').map(prod=>{return ProdutoDTO.mapper(prod,cdn)})
+            produtos: data.get('Produtos').map(prod=>{return ProdutoDTO.mapper(prod,cdn)})
         }
     }
 }
