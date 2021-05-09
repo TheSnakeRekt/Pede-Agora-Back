@@ -69,15 +69,18 @@ const TamanhoPopulatorDTO = require("./DTO/TamanhoPopulatorDTO");
                                     const groupInstance = await db.GrupoTamanho.createOrUpdate(GrupoPopulatorDTO.mapper(grupo));
 
                                     grupo.options.forEach(async opcao=>{
-                                        const optionInstance = await db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao));
+                                        const optionInstance = await db.OpcaoGrupoTamanho.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao));
 
-                                        await groupInstance.addOpcao(optionInstance);
+                                        await groupInstance.addOpcaoGrupoTamanho(optionInstance);
                                         await optionInstance.setGrupoTamanho(groupInstance);
+
+                                        await optionInstance.save();
                                     });
                                     
 
                                     await tamanhoInstance.addGrupoTamanho(groupInstance);
                                     await groupInstance.setTamanho(tamanhoInstance);
+                                    await groupInstance.save();
                                 });
                               
                                

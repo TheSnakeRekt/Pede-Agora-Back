@@ -26,21 +26,21 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
-var Opcao =
+var OpcaoGrupoTamanho =
 /*#__PURE__*/
 function (_Model) {
-  _inherits(Opcao, _Model);
+  _inherits(OpcaoGrupoTamanho, _Model);
 
-  function Opcao() {
-    _classCallCheck(this, Opcao);
+  function OpcaoGrupoTamanho() {
+    _classCallCheck(this, OpcaoGrupoTamanho);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Opcao).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(OpcaoGrupoTamanho).apply(this, arguments));
   }
 
-  _createClass(Opcao, null, [{
+  _createClass(OpcaoGrupoTamanho, null, [{
     key: "init",
     value: function init(con) {
-      return _get(_getPrototypeOf(Opcao), "init", this).call(this, {
+      return _get(_getPrototypeOf(OpcaoGrupoTamanho), "init", this).call(this, {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
@@ -63,7 +63,7 @@ function (_Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.Opcao.belongsTo(db.Grupo);
+      db.OpcaoGrupoTamanho.belongsTo(db.GrupoTamanho);
     }
   }, {
     key: "createOrUpdate",
@@ -96,7 +96,7 @@ function (_Model) {
     }
   }]);
 
-  return Opcao;
+  return OpcaoGrupoTamanho;
 }(Model);
 
-module.exports = Opcao;
+module.exports = OpcaoGrupoTamanho;

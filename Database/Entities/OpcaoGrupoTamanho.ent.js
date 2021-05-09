@@ -1,6 +1,6 @@
 const {DataTypes, Model} = require("sequelize");
 
-class GrupoTamanho extends Model {
+class OpcaoGrupoTamanho extends Model{
     static init(con){
         return super.init({
             id:{
@@ -8,16 +8,17 @@ class GrupoTamanho extends Model {
                 autoIncrement: true,
                 primaryKey: true
             },
-            force_max:DataTypes.INTEGER,
-            force_min:DataTypes.INTEGER,
-            required:{type:DataTypes.BOOLEAN, defaultValue:false},
+            preco:{
+                type:DataTypes.DECIMAL(4, 2),
+                defaultValue: 0.00
+            },
+            default:{type:DataTypes.BOOLEAN, defaultValue:false},
             nome:DataTypes.STRING
         }, {sequelize: con, timestamps:true});
     }
 
     static associate(db){
-        db.GrupoTamanho.belongsTo(db.Tamanho);
-        db.GrupoTamanho.hasMany(db.OpcaoGrupoTamanho);
+        db.OpcaoGrupoTamanho.belongsTo(db.GrupoTamanho);
     }
 
     static async createOrUpdate(values){
@@ -31,4 +32,4 @@ class GrupoTamanho extends Model {
     }
 }
 
-module.exports = GrupoTamanho;
+module.exports = OpcaoGrupoTamanho;

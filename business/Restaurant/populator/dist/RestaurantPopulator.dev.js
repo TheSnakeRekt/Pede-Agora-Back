@@ -142,18 +142,22 @@ var TamanhoPopulatorDTO = require("./DTO/TamanhoPopulatorDTO");
                                                             switch (_context.prev = _context.next) {
                                                               case 0:
                                                                 _context.next = 2;
-                                                                return regeneratorRuntime.awrap(db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao)));
+                                                                return regeneratorRuntime.awrap(db.OpcaoGrupoTamanho.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao)));
 
                                                               case 2:
                                                                 optionInstance = _context.sent;
                                                                 _context.next = 5;
-                                                                return regeneratorRuntime.awrap(groupInstance.addOpcao(optionInstance));
+                                                                return regeneratorRuntime.awrap(groupInstance.addOpcaoGrupoTamanho(optionInstance));
 
                                                               case 5:
                                                                 _context.next = 7;
                                                                 return regeneratorRuntime.awrap(optionInstance.setGrupoTamanho(groupInstance));
 
                                                               case 7:
+                                                                _context.next = 9;
+                                                                return regeneratorRuntime.awrap(optionInstance.save());
+
+                                                              case 9:
                                                               case "end":
                                                                 return _context.stop();
                                                             }
@@ -168,6 +172,10 @@ var TamanhoPopulatorDTO = require("./DTO/TamanhoPopulatorDTO");
                                                       return regeneratorRuntime.awrap(groupInstance.setTamanho(tamanhoInstance));
 
                                                     case 8:
+                                                      _context2.next = 10;
+                                                      return regeneratorRuntime.awrap(groupInstance.save());
+
+                                                    case 10:
                                                     case "end":
                                                       return _context2.stop();
                                                   }

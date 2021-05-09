@@ -19,7 +19,6 @@ class Opcao extends Model{
 
     static associate(db){
         db.Opcao.belongsTo(db.Grupo);
-        db.Opcao.belongsTo(db.GrupoTamanho);
     }
 
     static async createOrUpdate(values){

@@ -62,7 +62,7 @@ function (_Model) {
     key: "associate",
     value: function associate(db) {
       db.GrupoTamanho.belongsTo(db.Tamanho);
-      db.GrupoTamanho.hasMany(db.Opcao);
+      db.GrupoTamanho.hasMany(db.OpcaoGrupoTamanho);
     }
   }, {
     key: "createOrUpdate",
