@@ -104,13 +104,25 @@ function () {
                   required: true,
                   include: [{
                     model: db.Produto,
-                    required: true
+                    required: true,
+                    include: {
+                      model: db.Tamanho,
+                      required: false,
+                      include: {
+                        model: db.GrupoTamanho,
+                        required: false,
+                        include: {
+                          model: db.Opcao,
+                          required: false
+                        }
+                      }
+                    }
                   }, {
                     model: db.Grupo,
                     required: false,
                     include: {
                       model: db.Opcao,
-                      required: true
+                      required: false
                     }
                   }]
                 }

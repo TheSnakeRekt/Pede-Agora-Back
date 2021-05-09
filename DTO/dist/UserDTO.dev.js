@@ -6,24 +6,28 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var MoradaDTO = require("./MoradaDTO");
+
 module.exports =
 /*#__PURE__*/
 function () {
-  function OpcaoDTO() {
-    _classCallCheck(this, OpcaoDTO);
+  function UserDTO() {
+    _classCallCheck(this, UserDTO);
   }
 
-  _createClass(OpcaoDTO, null, [{
+  _createClass(UserDTO, null, [{
     key: "mapper",
-    value: function mapper(data) {
+    value: function mapper(user) {
       return {
-        id: data.get('id'),
-        preco: data.get('preco'),
-        nome: data.get('nome'),
-        "default": data.get('default')
+        nome: user.nome,
+        telefone: user.telefone,
+        email: user.email,
+        nif: user.nif,
+        moradas: user.Moradas ? MoradaDTO.mapper(user.Moradas) : '',
+        token: user.token ? user.token : ""
       };
     }
   }]);
 
-  return OpcaoDTO;
+  return UserDTO;
 }();

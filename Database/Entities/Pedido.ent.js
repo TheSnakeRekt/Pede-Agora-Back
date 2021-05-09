@@ -23,6 +23,7 @@ class Pedido extends Model {
                 type:DataTypes.DATE,
                 defaultValue:DataTypes.NOW
             },
+            infoExtra:DataTypes.TEXT,
             fimDePedido:DataTypes.DATE,
             hasPromoCode:DataTypes.BOOLEAN,
             promoCode:DataTypes.STRING,

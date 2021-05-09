@@ -6,29 +6,21 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var TamanhoDTO = require("./TamanhoDTO");
-
 module.exports =
 /*#__PURE__*/
 function () {
-  function ProdutoDTO() {
-    _classCallCheck(this, ProdutoDTO);
+  function Grupo_Opcao() {
+    _classCallCheck(this, Grupo_Opcao);
   }
 
-  _createClass(ProdutoDTO, null, [{
-    key: "mapper",
-    value: function mapper(data, cdn) {
-      return {
-        id: data.get('id'),
-        nome: data.get('nome'),
-        foto: data.get('foto') ? "".concat(cdn).concat(data.get('foto')) : '',
-        descricao: data.get('descricao'),
-        tags: data.get('tags'),
-        preco: data.get('valorCIva'),
-        tamanhos: data.get('Tamanhos') ? data.get('Tamanhos').map(TamanhoDTO.mapper) : []
-      };
+  _createClass(Grupo_Opcao, null, [{
+    key: "define",
+    value: function define(con) {
+      return con.define('Grupo_Opcao', {}, {
+        timestamps: false
+      });
     }
   }]);
 
-  return ProdutoDTO;
+  return Grupo_Opcao;
 }();

@@ -9,6 +9,7 @@ const ProdutoPopulatorDTO = require("./DTO/ProdutoPopulatorDTO");
 const GrupoPopulatorDTO = require("./DTO/GrupoPopulatorDTO");
 const OpcaoPopulatorDTO = require("./DTO/OpcaoPopulatorDTO");
 const MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
+const TamanhoPopulatorDTO = require("./DTO/TamanhoPopulatorDTO");
 
 (()=>{
     restaurant_server.forEach(restaurante=>{
@@ -48,9 +49,9 @@ const MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
                     try {
                         let fotocat =  fotos.categories.find(foto=> foto.id == categorie.id);
                         let filename = fotocat? fotocat.filename: '';
-                        console.log(CategoriaPopulatorDTO.mapper(categorie,filename));
 
-                        const cat = await db.Categoria.createOrUpdate(CategoriaPopulatorDTO.mapper(categorie,fotocat.filename));
+
+                        const cat = await db.Categoria.createOrUpdate(CategoriaPopulatorDTO.mapper(categorie,filename));
                         await cat.setMenu(menuInstance);
 
                         const groups = categorie.groups;
@@ -61,6 +62,30 @@ const MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
                             let filename = fotoitem? fotoitem.filename: '';
                             const itemInstance = await db.Produto.createOrUpdate(ProdutoPopulatorDTO.mapper(item, filename));
 
+                            item.sizes.forEach(async data=>{
+                                const tamanhoInstance = await db.Tamanho.createOrUpdate(TamanhoPopulatorDTO.mapper(data));
+
+                                data.groups.forEach(async grupo =>{
+                                    const groupInstance = await db.GrupoTamanho.createOrUpdate(GrupoPopulatorDTO.mapper(grupo));
+
+                                    grupo.options.forEach(async opcao=>{
+                                        const optionInstance = await db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao));
+
+                                        await groupInstance.addOpcao(optionInstance);
+                                        await optionInstance.setGrupoTamanho(groupInstance);
+                                    });
+                                    
+
+                                    await tamanhoInstance.addGrupoTamanho(groupInstance);
+                                    await groupInstance.setTamanho(tamanhoInstance);
+                                });
+                              
+                               
+                                await itemInstance.addTamanho(tamanhoInstance);
+                                await tamanhoInstance.setProduto(itemInstance);
+                            });
+                            
+
                             await itemInstance.setRestaurante(restaurant);
                             await itemInstance.addCategorium(cat);
                             
@@ -70,19 +95,17 @@ const MenuPopulatorDTO = require("./DTO/MenuPopulatorDTO");
 
                         groups.forEach(async group=>{
                             const groupInstance = await db.Grupo.createOrUpdate(GrupoPopulatorDTO.mapper(group));
-                            await cat.addGrupo(groupInstance)
+                            await cat.addGrupo(groupInstance);
                             await groupInstance.setCategorium(cat);
 
                             group.options.forEach(async option=>{
-                                let optionInstance = await db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(option));
+                                const optionInstance = await db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(option));
+                                await groupInstance.addOpcao(optionInstance);
                                 await optionInstance.setGrupo(groupInstance);
                             });
                         });
-
-                        
-
                     } catch (error) {
-                        
+                
                     }
                 })
             } catch (error) {

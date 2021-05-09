@@ -21,11 +21,13 @@ class Produto extends Model {
             },
             tags:DataTypes.STRING,
             descricao:DataTypes.TEXT,
+            sizes:DataTypes.STRING,
         }, {sequelize: con, timestamps:true});
     }
 
     static associate(db){
         db.Produto.belongsTo(db.Restaurante);
+        db.Produto.hasMany(db.Tamanho);
         db.Produto.belongsToMany(db.Categoria, {through: Categoria_Produto.define(db.sequelize)});
     }
 

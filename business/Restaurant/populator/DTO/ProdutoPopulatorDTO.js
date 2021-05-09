@@ -7,7 +7,7 @@ module.exports = class ProdutoPopulatorDTO {
             valorCIva:data.price,
             valorSIva:data.price,
             tags:JSON.stringify(data.tags),
-            foto:foto ? foto:''
+            foto:foto ? foto:'',
         }
     }
 }
