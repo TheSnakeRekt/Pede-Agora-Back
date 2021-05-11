@@ -13,7 +13,10 @@ const Conta = require('./Entities/Conta.ent');
 const Opcao = require('./Entities/Opcao.ent');
 const Tamanho = require('./Entities/Tamanho.ent');
 const GrupoTamanho = require('./Entities/GrupoTamanho.ent');
+const GrupoProduto = require('./Entities/GrupoProduto.ent');
 const OpcaoGrupoTamanho = require('./Entities/OpcaoGrupoTamanho.ent');
+const OpcaoGrupoProduto = require('./Entities/OpcaoGrupoProduto.ent');
+
 
 const db = {};
 
@@ -35,6 +38,8 @@ db.Opcao = Opcao;
 db.Tamanho = Tamanho;
 db.GrupoTamanho = GrupoTamanho;
 db.OpcaoGrupoTamanho = OpcaoGrupoTamanho;
+db.GrupoProduto = GrupoProduto;
+db.OpcaoGrupoProduto = OpcaoGrupoProduto
 
 
 Conta.init(con);
@@ -53,6 +58,8 @@ Opcao.init(con);
 Tamanho.init(con);
 GrupoTamanho.init(con);
 OpcaoGrupoTamanho.init(con);
+GrupoProduto.init(con);
+OpcaoGrupoProduto.init(con);
 
 Conta.associate(db);
 Cliente.associate(db);
@@ -70,6 +77,8 @@ Opcao.associate(db);
 Tamanho.associate(db);
 GrupoTamanho.associate(db);
 OpcaoGrupoTamanho.associate(db);
+GrupoProduto.associate(db);
+OpcaoGrupoProduto.associate(db);
 
 db.sequelize.sync({ alter: true }).catch(err=>{
     console.error(err.sql);

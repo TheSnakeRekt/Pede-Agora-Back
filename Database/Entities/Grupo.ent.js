@@ -17,9 +17,7 @@ class Grupo extends Model {
 
     static associate(db){
         db.Grupo.belongsTo(db.Categoria);
-        db.Grupo.belongsTo(db.Tamanho);
-
-        db.Grupo.hasMany(db.Opcao);
+        db.Grupo.hasMany(db.Opcao,{as:'Opcoes'});
     }
 
     static async createOrUpdate(values){

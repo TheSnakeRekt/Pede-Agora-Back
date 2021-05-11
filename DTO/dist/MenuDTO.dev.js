@@ -26,9 +26,9 @@ function () {
         active: data.get('active'),
         foto: data.get('foto') ? "".concat(cdn).concat(data.get('foto')) : '',
         grupos: data.get('Grupos') ? data.get('Grupos').map(GrupoDTO.mapper) : [],
-        produtos: data.get('Produtos').map(function (prod) {
+        produtos: data.get('Produtos') ? data.get('Produtos').map(function (prod) {
           return ProdutoDTO.mapper(prod, cdn);
-        })
+        }) : []
       };
     }
   }]);

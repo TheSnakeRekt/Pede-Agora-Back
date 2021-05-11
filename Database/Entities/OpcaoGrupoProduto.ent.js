@@ -1,7 +1,6 @@
 const {DataTypes, Model} = require("sequelize");
-const Tamanho_Grupo = require("../Joins/Tamanho2Grupo.join");
 
-class Tamanho extends Model{
+class OpcaoGrupoProduto extends Model{
     static init(con){
         return super.init({
             id:{
@@ -19,8 +18,7 @@ class Tamanho extends Model{
     }
 
     static associate(db){
-        db.Tamanho.belongsTo(db.Produto);
-        db.Tamanho.belongsToMany(db.GrupoTamanho,{through:Tamanho_Grupo.define(db.sequelize)});
+        db.OpcaoGrupoProduto.belongsTo(db.GrupoProduto);
     }
 
     static async createOrUpdate(values){
@@ -34,4 +32,4 @@ class Tamanho extends Model{
     }
 }
 
-module.exports = Tamanho;
+module.exports = OpcaoGrupoProduto;

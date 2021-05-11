@@ -56,59 +56,79 @@ const TamanhoPopulatorDTO = require("./DTO/TamanhoPopulatorDTO");
 
                         const groups = categorie.groups;
                         const items = categorie.items;
+                       
 
-                        items.forEach(async item =>{
+                        for(let item of items){
+                          
                             let fotoitem = fotos.items.find(foto=>foto.id == item.id);
                             let filename = fotoitem? fotoitem.filename: '';
                             const itemInstance = await db.Produto.createOrUpdate(ProdutoPopulatorDTO.mapper(item, filename));
 
-                            item.sizes.forEach(async data=>{
+                            for(let data of item.sizes){
+                             
                                 const tamanhoInstance = await db.Tamanho.createOrUpdate(TamanhoPopulatorDTO.mapper(data));
 
-                                data.groups.forEach(async grupo =>{
-                                    const groupInstance = await db.GrupoTamanho.createOrUpdate(GrupoPopulatorDTO.mapper(grupo));
+                                for(let grupo of data.groups){
+                                    const groupTamanhoInstance = await db.GrupoTamanho.createOrUpdate(GrupoPopulatorDTO.mapper(grupo));
 
-                                    grupo.options.forEach(async opcao=>{
+                                    for(let opcao of grupo.options){
                                         const optionInstance = await db.OpcaoGrupoTamanho.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao));
 
-                                        await groupInstance.addOpcaoGrupoTamanho(optionInstance);
-                                        await optionInstance.setGrupoTamanho(groupInstance);
-
+                                        await groupTamanhoInstance.addOpcoes(optionInstance);
+                                        await optionInstance.setGrupoTamanho(groupTamanhoInstance);
                                         await optionInstance.save();
-                                    });
-                                    
+                                    }
 
-                                    await tamanhoInstance.addGrupoTamanho(groupInstance);
-                                    await groupInstance.setTamanho(tamanhoInstance);
-                                    await groupInstance.save();
-                                });
+                                    await tamanhoInstance.addGrupoTamanho(groupTamanhoInstance);
+                                   // await groupTamanhoInstance.addTamanho(tamanhoInstance);
+                                    await groupTamanhoInstance.save();
+                                }
                               
                                
                                 await itemInstance.addTamanho(tamanhoInstance);
                                 await tamanhoInstance.setProduto(itemInstance);
-                            });
+                            }
                             
+                            for(let grupo of item.groups){
+                                const groupProdutoInstance = await db.GrupoProduto.createOrUpdate(GrupoPopulatorDTO.mapper(grupo));
 
+                                for(let opcao of grupo.options){
+                                    const optionProdutoInstance = await db.OpcaoGrupoProduto.createOrUpdate(OpcaoPopulatorDTO.mapper(opcao));
+                                    
+                                    await groupProdutoInstance.addOpcoes(optionProdutoInstance);
+                                    await optionProdutoInstance.setGrupoProduto(groupProdutoInstance);
+                                    await optionProdutoInstance.save();
+                                }
+
+                                await itemInstance.addGrupoProduto(groupProdutoInstance);
+                                await groupProdutoInstance.addProduto(itemInstance);
+                                await groupProdutoInstance.save();
+                            }
+                            
                             await itemInstance.setRestaurante(restaurant);
                             await itemInstance.addCategorium(cat);
                             
                             itemInstance.setDataValue("CategoriumId",await cat.getDataValue("id"));
                             await itemInstance.save();
-                        });
+                           
+                        }
 
-                        groups.forEach(async group=>{
+                        for(let group of groups){
+                            
                             const groupInstance = await db.Grupo.createOrUpdate(GrupoPopulatorDTO.mapper(group));
                             await cat.addGrupo(groupInstance);
                             await groupInstance.setCategorium(cat);
 
-                            group.options.forEach(async option=>{
+                            for(let option of group.options){
                                 const optionInstance = await db.Opcao.createOrUpdate(OpcaoPopulatorDTO.mapper(option));
-                                await groupInstance.addOpcao(optionInstance);
+                                await groupInstance.addOpcoes(optionInstance);
                                 await optionInstance.setGrupo(groupInstance);
-                            });
-                        });
+                            }
+                        }
+
+                       
                     } catch (error) {
-                
+                        console.error(error)
                     }
                 })
             } catch (error) {

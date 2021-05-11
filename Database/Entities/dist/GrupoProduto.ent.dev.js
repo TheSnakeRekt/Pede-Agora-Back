@@ -26,21 +26,23 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
-var Grupo =
+var Produto_Grupo = require("../Joins/Produto2Grupo.join");
+
+var GrupoProduto =
 /*#__PURE__*/
 function (_Model) {
-  _inherits(Grupo, _Model);
+  _inherits(GrupoProduto, _Model);
 
-  function Grupo() {
-    _classCallCheck(this, Grupo);
+  function GrupoProduto() {
+    _classCallCheck(this, GrupoProduto);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Grupo).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(GrupoProduto).apply(this, arguments));
   }
 
-  _createClass(Grupo, null, [{
+  _createClass(GrupoProduto, null, [{
     key: "init",
     value: function init(con) {
-      return _get(_getPrototypeOf(Grupo), "init", this).call(this, {
+      return _get(_getPrototypeOf(GrupoProduto), "init", this).call(this, {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
@@ -61,9 +63,11 @@ function (_Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.Grupo.belongsTo(db.Categoria);
-      db.Grupo.hasMany(db.Opcao, {
+      db.GrupoProduto.hasMany(db.OpcaoGrupoProduto, {
         as: 'Opcoes'
+      });
+      db.GrupoProduto.belongsToMany(db.Produto, {
+        through: Produto_Grupo.define(db.sequelize)
       });
     }
   }, {
@@ -97,7 +101,7 @@ function (_Model) {
     }
   }]);
 
-  return Grupo;
+  return GrupoProduto;
 }(Model);
 
-module.exports = Grupo;
+module.exports = GrupoProduto;

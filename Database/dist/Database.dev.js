@@ -32,7 +32,11 @@ var Tamanho = require('./Entities/Tamanho.ent');
 
 var GrupoTamanho = require('./Entities/GrupoTamanho.ent');
 
+var GrupoProduto = require('./Entities/GrupoProduto.ent');
+
 var OpcaoGrupoTamanho = require('./Entities/OpcaoGrupoTamanho.ent');
+
+var OpcaoGrupoProduto = require('./Entities/OpcaoGrupoProduto.ent');
 
 var db = {};
 db.sequelize = con;
@@ -52,6 +56,8 @@ db.Opcao = Opcao;
 db.Tamanho = Tamanho;
 db.GrupoTamanho = GrupoTamanho;
 db.OpcaoGrupoTamanho = OpcaoGrupoTamanho;
+db.GrupoProduto = GrupoProduto;
+db.OpcaoGrupoProduto = OpcaoGrupoProduto;
 Conta.init(con);
 Restaurante.init(con);
 Cliente.init(con);
@@ -68,6 +74,8 @@ Opcao.init(con);
 Tamanho.init(con);
 GrupoTamanho.init(con);
 OpcaoGrupoTamanho.init(con);
+GrupoProduto.init(con);
+OpcaoGrupoProduto.init(con);
 Conta.associate(db);
 Cliente.associate(db);
 Morada.associate(db);
@@ -84,6 +92,8 @@ Opcao.associate(db);
 Tamanho.associate(db);
 GrupoTamanho.associate(db);
 OpcaoGrupoTamanho.associate(db);
+GrupoProduto.associate(db);
+OpcaoGrupoProduto.associate(db);
 db.sequelize.sync({
   alter: true
 })["catch"](function (err) {

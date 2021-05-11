@@ -26,33 +26,42 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
-var Grupo =
+var Categoria_Produto = require("../Joins/Categoria2Produto.join");
+
+var Produto_Grupo = require("../Joins/Produto2Grupo.join");
+
+var Produto =
 /*#__PURE__*/
 function (_Model) {
-  _inherits(Grupo, _Model);
+  _inherits(Produto, _Model);
 
-  function Grupo() {
-    _classCallCheck(this, Grupo);
+  function Produto() {
+    _classCallCheck(this, Produto);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Grupo).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Produto).apply(this, arguments));
   }
 
-  _createClass(Grupo, null, [{
+  _createClass(Produto, null, [{
     key: "init",
     value: function init(con) {
-      return _get(_getPrototypeOf(Grupo), "init", this).call(this, {
+      return _get(_getPrototypeOf(Produto), "init", this).call(this, {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true
         },
-        force_max: DataTypes.INTEGER,
-        force_min: DataTypes.INTEGER,
-        required: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: false
+        nome: DataTypes.STRING,
+        foto: DataTypes.STRING,
+        valorSIva: {
+          type: DataTypes.DECIMAL(4, 2),
+          defaultValue: 0.00
         },
-        nome: DataTypes.STRING
+        valorCIva: {
+          type: DataTypes.DECIMAL(4, 2),
+          defaultValue: 0.00
+        },
+        tags: DataTypes.STRING,
+        descricao: DataTypes.TEXT
       }, {
         sequelize: con,
         timestamps: true
@@ -61,9 +70,13 @@ function (_Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.Grupo.belongsTo(db.Categoria);
-      db.Grupo.hasMany(db.Opcao, {
-        as: 'Opcoes'
+      db.Produto.belongsTo(db.Restaurante);
+      db.Produto.hasMany(db.Tamanho);
+      db.Produto.belongsToMany(db.GrupoProduto, {
+        through: Produto_Grupo.define(db.sequelize)
+      });
+      db.Produto.belongsToMany(db.Categoria, {
+        through: Categoria_Produto.define(db.sequelize)
       });
     }
   }, {
@@ -97,7 +110,7 @@ function (_Model) {
     }
   }]);
 
-  return Grupo;
+  return Produto;
 }(Model);
 
-module.exports = Grupo;
+module.exports = Produto;

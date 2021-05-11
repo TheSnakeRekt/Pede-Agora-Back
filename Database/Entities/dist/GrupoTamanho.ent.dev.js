@@ -26,6 +26,8 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
+var Tamanho_Grupo = require('../Joins/Tamanho2Grupo.join');
+
 var GrupoTamanho =
 /*#__PURE__*/
 function (_Model) {
@@ -61,8 +63,12 @@ function (_Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.GrupoTamanho.belongsTo(db.Tamanho);
-      db.GrupoTamanho.hasMany(db.OpcaoGrupoTamanho);
+      db.GrupoTamanho.hasMany(db.OpcaoGrupoTamanho, {
+        as: 'Opcoes'
+      });
+      db.GrupoTamanho.belongsToMany(db.Tamanho, {
+        through: Tamanho_Grupo.define(db.sequelize)
+      });
     }
   }, {
     key: "createOrUpdate",

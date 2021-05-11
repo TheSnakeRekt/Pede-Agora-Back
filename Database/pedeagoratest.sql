@@ -44,7 +44,7 @@ CREATE TABLE `categoria` (
 
 CREATE TABLE `categoria_produtos` (
   `ProdutoId` int(11) NOT NULL,
-  `MenuId` int(11) NOT NULL
+  `CategoriumId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -302,8 +302,8 @@ ALTER TABLE `categoria`
 -- Índices para tabela `categoria_produtos`
 --
 ALTER TABLE `categoria_produtos`
-  ADD PRIMARY KEY (`ProdutoId`,`MenuId`),
-  ADD KEY `MenuId` (`MenuId`);
+  ADD PRIMARY KEY (`ProdutoId`,`CategoriumId`),
+  ADD KEY `CategoriumId` (`CategoriumId`);
 
 --
 -- Índices para tabela `clientes`
@@ -667,7 +667,7 @@ ALTER TABLE `categoria`
 --
 ALTER TABLE `categoria_produtos`
   ADD CONSTRAINT `categoria_produtos_ibfk_1` FOREIGN KEY (`ProdutoId`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `categoria_produtos_ibfk_2` FOREIGN KEY (`MenuId`) REFERENCES `menus` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `categoria_produtos_ibfk_2` FOREIGN KEY (`CategoriumId`) REFERENCES `categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `clientes`

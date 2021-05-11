@@ -15,11 +15,12 @@ var db = require('../../Database/Database');
 var RestauranteService =
 /*#__PURE__*/
 function () {
-  function RestauranteService(restauranteRepository, menuRepository) {
+  function RestauranteService(restauranteRepository, menuRepository, grupoTamanho) {
     _classCallCheck(this, RestauranteService);
 
     this.restauranteRepository = restauranteRepository;
     this.menuRepository = menuRepository;
+    this.grupoTamanhoRepository = grupoTamanho;
   }
 
   _createClass(RestauranteService, [{
@@ -105,23 +106,34 @@ function () {
                   include: [{
                     model: db.Produto,
                     required: true,
-                    include: {
+                    separate: true,
+                    include: [{
                       model: db.Tamanho,
                       required: false,
                       include: {
                         model: db.GrupoTamanho,
                         required: false,
                         include: {
-                          model: db.Opcao,
+                          model: db.OpcaoGrupoTamanho,
+                          as: 'Opcoes',
                           required: false
                         }
                       }
-                    }
+                    }, {
+                      model: db.GrupoProduto,
+                      required: false,
+                      include: {
+                        model: db.OpcaoGrupoProduto,
+                        as: 'Opcoes',
+                        required: false
+                      }
+                    }]
                   }, {
                     model: db.Grupo,
                     required: false,
                     include: {
                       model: db.Opcao,
+                      as: 'Opcoes',
                       required: false
                     }
                   }]
@@ -166,4 +178,4 @@ function () {
   return RestauranteService;
 }();
 
-module.exports = new RestauranteService(db.Restaurante, db.Menu);
+module.exports = new RestauranteService(db.Restaurante, db.Menu, db.GrupoTamanho);

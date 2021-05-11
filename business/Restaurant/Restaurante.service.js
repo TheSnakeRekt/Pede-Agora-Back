@@ -4,9 +4,10 @@ const MenuDTO = require('../../DTO/MenuDTO');
 const db = require('../../Database/Database');
 
 class RestauranteService {
-    constructor(restauranteRepository, menuRepository){
+    constructor(restauranteRepository, menuRepository, grupoTamanho){
         this.restauranteRepository = restauranteRepository;
         this.menuRepository = menuRepository;
+        this.grupoTamanhoRepository = grupoTamanho;
     }
 
     async findAll(){
@@ -25,7 +26,8 @@ class RestauranteService {
 
     async findOneWithMeals(id){
         this.menuRepository.sync();
-        const rest = await this.restauranteRepository.findOne({where:{id:id},raw:true})
+        const rest = await this.restauranteRepository.findOne({where:{id:id},raw:true});
+
         const meals = await this.menuRepository.findOne({where:{RestauranteId:id}, 
             include:{
                 model:db.Categoria,
@@ -33,29 +35,45 @@ class RestauranteService {
                 include:[{
                     model:db.Produto,
                     required:true,
-                    include:{
+                    separate:true,
+                    include:[{
                         model:db.Tamanho,
                         required:false,
                         include:{
                             model:db.GrupoTamanho,
+                       
                             required:false,
                             include:{
-                                model:db.Opcao,
+                                model:db.OpcaoGrupoTamanho,
+                                as:'Opcoes',
                                 required:false
                             }
                         }
-                    }
+                    },{
+                        model:db.GrupoProduto,
+                        required:false,
+                       
+                        include:{
+                            model:db.OpcaoGrupoProduto,
+                            as:'Opcoes',
+                            required:false,
+                        }
+                    }]
                 },{
                     model:db.Grupo,
                     required:false,
                     include:{
                         model:db.Opcao,
+                        as:'Opcoes',
                         required:false
                     }
                 }]
             }
         });
-        return meals.get('Categoria').map(cat=>MenuDTO.mapper(cat,rest.cdn));
+
+    
+
+        return meals.get('Categoria').map(cat=>MenuDTO.mapper(cat, rest.cdn));
     }
 
     async addRestaurante(data){
@@ -63,4 +81,4 @@ class RestauranteService {
     }
 }
 
-module.exports = new RestauranteService(db.Restaurante, db.Menu);
+module.exports = new RestauranteService(db.Restaurante, db.Menu, db.GrupoTamanho);

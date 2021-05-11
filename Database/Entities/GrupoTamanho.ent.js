@@ -1,5 +1,5 @@
 const {DataTypes, Model} = require("sequelize");
-
+const Tamanho_Grupo = require('../Joins/Tamanho2Grupo.join');
 class GrupoTamanho extends Model {
     static init(con){
         return super.init({
@@ -16,8 +16,8 @@ class GrupoTamanho extends Model {
     }
 
     static associate(db){
-        db.GrupoTamanho.belongsTo(db.Tamanho);
-        db.GrupoTamanho.hasMany(db.OpcaoGrupoTamanho);
+        db.GrupoTamanho.hasMany(db.OpcaoGrupoTamanho,{as:'Opcoes'});
+        db.GrupoTamanho.belongsToMany(db.Tamanho, {through: Tamanho_Grupo.define(db.sequelize)});
     }
 
     static async createOrUpdate(values){
