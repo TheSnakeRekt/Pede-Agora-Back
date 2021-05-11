@@ -1,3 +1,4 @@
+const GrupoDTO = require("./GrupoDTO")
 const TamanhoDTO = require("./TamanhoDTO")
 
 module.exports = class ProdutoDTO {
@@ -9,6 +10,7 @@ module.exports = class ProdutoDTO {
            descricao:data.get('descricao'),
            tags: data.get('tags'),
            preco: data.get('valorCIva'),
+           grupos: data.get('GrupoProdutos') ? data.get('GrupoProdutos').map(GrupoDTO.mapper) : [],
            tamanhos: data.get('Tamanhos') ? data.get('Tamanhos').map(TamanhoDTO.mapper) : []
         }
     }
