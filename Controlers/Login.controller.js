@@ -10,25 +10,26 @@ class LoginController {
 
     loginRestAdapter(app){
 
-        app.post('/login',(req, res) => {
+        app.post('/login', (req, res) => {
             let data = this.accountManagerService.checkToken(req.headers['x-access-token']);
-            if(data){
-                data.token = req.headers['x-access-token'];
-                res.send({
-                    access:true,
-                    account:data
-                });
-                res.end();
-            }else{
-                this.accountManagerService.login(req.body).then(account => {
-                    if(!account){
-                        res.send({error:`Invalid account or password`});
-                    }else{
-                        res.send(account);
-                    }
+            Promise.resolve(data).then((solved)=>{
+                if(solved.access){
+                
+                    res.send(solved);
                     res.end();
-                });
-            }
+                }else{
+                    this.accountManagerService.login(req.body).then(account => {
+                        if(!account){
+                            res.send({error:`Invalid account or password`});
+                        }else{
+                            res.send(account);
+                        }
+                        res.end();
+                    });
+                }
+
+            })
+
         });
 
         app.post('/signin',(req, res) => {
@@ -37,6 +38,21 @@ class LoginController {
                 res.end();
             });
         });
+
+        app.post('/address',async (req,res)=>{
+            let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
+
+            if(data){
+                const added = await this.accountManagerService.addAddress(data, req.body);
+                res.send(added);
+                res.end();
+                return;
+            }
+
+            res.send(false);
+            res.end();
+            return; 
+        })
 
         app.get('/mailverify',(req, res) =>{
             this.accountManagerService.verifyAccountEmail(req.query.token).then(data=>{
@@ -47,7 +63,6 @@ class LoginController {
 
         app.get('/phoneverify',(req, res) =>{
             this.accountManagerService.verifyAccountPhone(req.body.codigo, req.body.telefone).then(data=>{
-                console.log(data);
                 res.send(data);
                 res.end();
             });

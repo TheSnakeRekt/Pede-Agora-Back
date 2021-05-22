@@ -41,7 +41,6 @@ class RestauranteService {
                         required:false,
                         include:{
                             model:db.GrupoTamanho,
-                       
                             required:false,
                             include:{
                                 model:db.OpcaoGrupoTamanho,

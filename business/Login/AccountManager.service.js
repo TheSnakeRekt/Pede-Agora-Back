@@ -25,8 +25,13 @@ class AccountManagerService extends AuthenticationSystem {
         if(user.name){
           
             this.clienteRepository.sync();
-            let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: user.name}, {telefone:user.name}), raw:true, nest: true, include:[this.contaRepository, this.moradaRepository]});
-       
+            let userInstance = await this.clienteRepository.findOne({
+                where:Sequelize.or({email: user.name}, {telefone:user.name}),  
+                nest: true,
+                include:[{model:this.contaRepository},{model:this.moradaRepository}]
+            });
+
+            
             if(userInstance != null){
                 return await AuthenticationSystem.authenticate(user.account.password, userInstance.Contum.password, UserDTO.mapper(userInstance));
             }  
@@ -35,8 +40,18 @@ class AccountManagerService extends AuthenticationSystem {
         return false;
     }
 
-    checkToken(header){
-        return AuthenticationSystem.checkToken(header);
+    async checkToken(header){
+        let data = AuthenticationSystem.checkToken(header)
+        
+        if(data){
+            let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: data.email}, {telefone:data.telefone}), nest: true, include:[this.contaRepository, this.moradaRepository]});
+            let user = await AuthenticationSystem.sign(UserDTO.mapper(userInstance));
+            return {
+                access:true,
+                account:user
+            }
+        }
+        return false; 
     }
 
     async signIn(data){
@@ -56,13 +71,15 @@ class AccountManagerService extends AuthenticationSystem {
         let token = AuthenticationSystem.randomToken();
         let conta = await this.contaRepository.create(ContaDTO.mapper(user.Conta, token));
         let userInstance = await this.clienteRepository.create(UserDTO.mapper(user.Utilizador));
-        let morada = await this.moradaRepository.create(MoradaDTO.mapper(user.Morada));
-        
+        let morada = await this.moradaRepository.build(MoradaDTO.mapper(user.Morada));
+        await morada[0].save()
+    
         await userInstance.setContum(conta);
-        await userInstance.addMorada(morada);
-        userInstance.MoradaId = morada.id;
+        await userInstance.addMorada(morada[0]);
+        userInstance.MoradaId = morada[0].id;
         await userInstance.save();
         
+
         let userDTO = AuthenticationSystem.sign(UserDTO.mapper(userInstance));
         userDTO.morada = MoradaDTO.mapper(morada);
 
@@ -91,6 +108,36 @@ class AccountManagerService extends AuthenticationSystem {
 
     async verifyAccountPhone(code, phone){
 
+    }
+
+    async addAddress(token, address){
+        if(token.access){
+            try {
+                let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: token.account.email}, {telefone:token.account.telefone}), nest: true, include:[this.contaRepository, this.moradaRepository]});
+                let geo = await this.locationFinderService.findGeoLoc(address);
+    
+                if(!geo){
+                    return false;
+                }
+        
+                address.geo = geo;
+        
+                let morada = this.moradaRepository.build(MoradaDTO.mapper(address));
+
+                await morada[0].save();
+                await userInstance.addMorada(morada[0])
+                userInstance.MoradaId = morada[0].id;
+                await userInstance.save();
+
+               return true;
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
+        }
+        
+
+        return false;
     }
 }
 

@@ -1,4 +1,5 @@
 const {DataTypes, Model} = require("sequelize");
+const Cliente_Morada = require("../Joins/Cliente2Morada.join");
 
 
 class Morada extends Model {
@@ -16,6 +17,8 @@ class Morada extends Model {
             pais:DataTypes.STRING,
             latitude:DataTypes.STRING,
             longitude:DataTypes.STRING,
+            name:DataTypes.STRING,
+            type:DataTypes.STRING,
             isRestaurant:{
                 type:DataTypes.BOOLEAN,
                 defaultValue:false
@@ -25,7 +28,7 @@ class Morada extends Model {
 
     static associate(db){
         db.Morada.hasOne(db.Restaurante);
-        db.Morada.hasMany(db.Cliente);
+        db.Morada.belongsToMany(db.Cliente,{through:Cliente_Morada.define(db.sequelize)});
         db.Morada.hasMany(db.Entregador);
     }
 
