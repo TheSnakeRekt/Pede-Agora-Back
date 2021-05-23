@@ -337,7 +337,7 @@ function (_AuthenticationSystem) {
           switch (_context6.prev = _context6.next) {
             case 0:
               if (!token.access) {
-                _context6.next = 26;
+                _context6.next = 25;
                 break;
               }
 
@@ -379,28 +379,87 @@ function (_AuthenticationSystem) {
               return regeneratorRuntime.awrap(userInstance.addMorada(morada[0]));
 
             case 16:
-              userInstance.MoradaId = morada[0].id;
-              _context6.next = 19;
+              _context6.next = 18;
               return regeneratorRuntime.awrap(userInstance.save());
 
-            case 19:
+            case 18:
               return _context6.abrupt("return", true);
 
-            case 22:
-              _context6.prev = 22;
+            case 21:
+              _context6.prev = 21;
               _context6.t0 = _context6["catch"](1);
               console.error(_context6.t0);
               return _context6.abrupt("return", false);
 
-            case 26:
+            case 25:
               return _context6.abrupt("return", false);
 
-            case 27:
+            case 26:
             case "end":
               return _context6.stop();
           }
         }
-      }, null, this, [[1, 22]]);
+      }, null, this, [[1, 21]]);
+    }
+  }, {
+    key: "removeAddress",
+    value: function removeAddress(token, address) {
+      var userInstance, morada;
+      return regeneratorRuntime.async(function removeAddress$(_context7) {
+        while (1) {
+          switch (_context7.prev = _context7.next) {
+            case 0:
+              if (!token.access) {
+                _context7.next = 19;
+                break;
+              }
+
+              _context7.prev = 1;
+              _context7.next = 4;
+              return regeneratorRuntime.awrap(this.clienteRepository.findOne({
+                where: Sequelize.or({
+                  email: token.account.email
+                }, {
+                  telefone: token.account.telefone
+                }),
+                nest: true,
+                include: [this.contaRepository, this.moradaRepository]
+              }));
+
+            case 4:
+              userInstance = _context7.sent;
+              _context7.next = 7;
+              return regeneratorRuntime.awrap(userInstance.Moradas.find(function (elem) {
+                return elem.get().name == address;
+              }));
+
+            case 7:
+              morada = _context7.sent;
+              _context7.next = 10;
+              return regeneratorRuntime.awrap(morada.destroy());
+
+            case 10:
+              _context7.next = 12;
+              return regeneratorRuntime.awrap(userInstance.save());
+
+            case 12:
+              return _context7.abrupt("return", true);
+
+            case 15:
+              _context7.prev = 15;
+              _context7.t0 = _context7["catch"](1);
+              console.error(_context7.t0);
+              return _context7.abrupt("return", false);
+
+            case 19:
+              return _context7.abrupt("return", false);
+
+            case 20:
+            case "end":
+              return _context7.stop();
+          }
+        }
+      }, null, this, [[1, 15]]);
     }
   }]);
 

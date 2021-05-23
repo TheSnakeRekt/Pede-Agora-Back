@@ -125,8 +125,28 @@ class AccountManagerService extends AuthenticationSystem {
                 let morada = this.moradaRepository.build(MoradaDTO.mapper(address));
 
                 await morada[0].save();
-                await userInstance.addMorada(morada[0])
-                userInstance.MoradaId = morada[0].id;
+                await userInstance.addMorada(morada[0]);
+                await userInstance.save();
+
+               return true;
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
+        }
+        
+
+        return false;
+    }
+
+    async removeAddress(token, address){
+        if(token.access){
+            try {
+                let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: token.account.email}, {telefone:token.account.telefone}), nest: true, include:[this.contaRepository, this.moradaRepository]});
+           
+                let morada = await userInstance.Moradas.find(elem=> elem.get().name == address);
+
+                await morada.destroy();
                 await userInstance.save();
 
                return true;

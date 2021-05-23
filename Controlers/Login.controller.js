@@ -43,13 +43,22 @@ class LoginController {
             let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
 
             if(data){
-                const added = await this.accountManagerService.addAddress(data, req.body);
-                res.send(added);
-                res.end();
-                return;
+                data = await this.accountManagerService.addAddress(data, req.body);
             }
 
-            res.send(false);
+            res.send(data);
+            res.end();
+            return; 
+        });
+
+        app.delete('/address',async (req,res)=>{
+            let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
+           
+            if(data){
+                data = await this.accountManagerService.removeAddress(data, req.query.address);
+            }
+
+            res.send(data);
             res.end();
             return; 
         })
