@@ -93,7 +93,8 @@ class AccountManagerService extends AuthenticationSystem {
 
     async verifyAccountEmail(token){
         this.contaRepository.sync();
-        let conta = await this.contaRepository.findOne({where:{verifyCode:token, verified:false},raw:true})
+        let conta = await this.contaRepository.findOne({where:{verifyCode:token, verified:false},raw:true});
+
         if(!conta){
             return false;
         }
@@ -112,6 +113,7 @@ class AccountManagerService extends AuthenticationSystem {
 
     async addAddress(token, address){
         if(token.access){
+            this.contaRepository.sync();
             try {
                 let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: token.account.email}, {telefone:token.account.telefone}), nest: true, include:[this.contaRepository, this.moradaRepository]});
                 let geo = await this.locationFinderService.findGeoLoc(address);
@@ -158,6 +160,29 @@ class AccountManagerService extends AuthenticationSystem {
         
 
         return false;
+    }
+
+    async changePassword(token, oldPsw, newPsw){
+        console.log(oldPsw, newPsw)
+        if(token.access){
+            try {
+                let userInstance = await this.clienteRepository.findOne({where:Sequelize.or({email: token.account.email}, {telefone:token.account.telefone}), nest: true, include:[this.contaRepository, this.moradaRepository]});
+                let conta = await userInstance.get("Contum");
+                
+                let isValid = await AuthenticationSystem.authenticate(conta.password, oldPsw);
+
+                if(isValid){
+                    conta.password = await AuthenticationSystem.createPassword(newPsw);
+                    await conta.save();
+                    return true;
+                }
+
+                return false;
+            } catch (error) {
+                console.error(error);
+                return false;
+            }
+        }
     }
 }
 

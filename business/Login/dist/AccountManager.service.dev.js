@@ -337,12 +337,13 @@ function (_AuthenticationSystem) {
           switch (_context6.prev = _context6.next) {
             case 0:
               if (!token.access) {
-                _context6.next = 25;
+                _context6.next = 26;
                 break;
               }
 
-              _context6.prev = 1;
-              _context6.next = 4;
+              this.contaRepository.sync();
+              _context6.prev = 2;
+              _context6.next = 5;
               return regeneratorRuntime.awrap(this.clienteRepository.findOne({
                 where: Sequelize.or({
                   email: token.account.email
@@ -353,53 +354,53 @@ function (_AuthenticationSystem) {
                 include: [this.contaRepository, this.moradaRepository]
               }));
 
-            case 4:
+            case 5:
               userInstance = _context6.sent;
-              _context6.next = 7;
+              _context6.next = 8;
               return regeneratorRuntime.awrap(this.locationFinderService.findGeoLoc(address));
 
-            case 7:
+            case 8:
               geo = _context6.sent;
 
               if (geo) {
-                _context6.next = 10;
+                _context6.next = 11;
                 break;
               }
 
               return _context6.abrupt("return", false);
 
-            case 10:
+            case 11:
               address.geo = geo;
               morada = this.moradaRepository.build(MoradaDTO.mapper(address));
-              _context6.next = 14;
+              _context6.next = 15;
               return regeneratorRuntime.awrap(morada[0].save());
 
-            case 14:
-              _context6.next = 16;
+            case 15:
+              _context6.next = 17;
               return regeneratorRuntime.awrap(userInstance.addMorada(morada[0]));
 
-            case 16:
-              _context6.next = 18;
+            case 17:
+              _context6.next = 19;
               return regeneratorRuntime.awrap(userInstance.save());
 
-            case 18:
+            case 19:
               return _context6.abrupt("return", true);
 
-            case 21:
-              _context6.prev = 21;
-              _context6.t0 = _context6["catch"](1);
+            case 22:
+              _context6.prev = 22;
+              _context6.t0 = _context6["catch"](2);
               console.error(_context6.t0);
               return _context6.abrupt("return", false);
 
-            case 25:
+            case 26:
               return _context6.abrupt("return", false);
 
-            case 26:
+            case 27:
             case "end":
               return _context6.stop();
           }
         }
-      }, null, this, [[1, 21]]);
+      }, null, this, [[2, 22]]);
     }
   }, {
     key: "removeAddress",
@@ -460,6 +461,78 @@ function (_AuthenticationSystem) {
           }
         }
       }, null, this, [[1, 15]]);
+    }
+  }, {
+    key: "changePassword",
+    value: function changePassword(token, oldPsw, newPsw) {
+      var userInstance, conta, isValid;
+      return regeneratorRuntime.async(function changePassword$(_context8) {
+        while (1) {
+          switch (_context8.prev = _context8.next) {
+            case 0:
+              console.log(oldPsw, newPsw);
+
+              if (!token.access) {
+                _context8.next = 26;
+                break;
+              }
+
+              _context8.prev = 2;
+              _context8.next = 5;
+              return regeneratorRuntime.awrap(this.clienteRepository.findOne({
+                where: Sequelize.or({
+                  email: token.account.email
+                }, {
+                  telefone: token.account.telefone
+                }),
+                nest: true,
+                include: [this.contaRepository, this.moradaRepository]
+              }));
+
+            case 5:
+              userInstance = _context8.sent;
+              _context8.next = 8;
+              return regeneratorRuntime.awrap(userInstance.get("Contum"));
+
+            case 8:
+              conta = _context8.sent;
+              _context8.next = 11;
+              return regeneratorRuntime.awrap(AuthenticationSystem.authenticate(conta.password, oldPsw));
+
+            case 11:
+              isValid = _context8.sent;
+
+              if (!isValid) {
+                _context8.next = 19;
+                break;
+              }
+
+              _context8.next = 15;
+              return regeneratorRuntime.awrap(AuthenticationSystem.createPassword(newPsw));
+
+            case 15:
+              conta.password = _context8.sent;
+              _context8.next = 18;
+              return regeneratorRuntime.awrap(conta.save());
+
+            case 18:
+              return _context8.abrupt("return", true);
+
+            case 19:
+              return _context8.abrupt("return", false);
+
+            case 22:
+              _context8.prev = 22;
+              _context8.t0 = _context8["catch"](2);
+              console.error(_context8.t0);
+              return _context8.abrupt("return", false);
+
+            case 26:
+            case "end":
+              return _context8.stop();
+          }
+        }
+      }, null, this, [[2, 22]]);
     }
   }]);
 

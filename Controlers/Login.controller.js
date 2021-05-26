@@ -51,6 +51,19 @@ class LoginController {
             return; 
         });
 
+        
+        app.post('/psw',async (req,res)=>{
+            let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
+
+            if(data){
+                data = await this.accountManagerService.changePassword(data, req.body.oldPassword, req.body.newPassword);
+            }
+
+            res.send(data);
+            res.end();
+            return; 
+        });
+
         app.delete('/address',async (req,res)=>{
             let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
            
@@ -61,7 +74,7 @@ class LoginController {
             res.send(data);
             res.end();
             return; 
-        })
+        });
 
         app.get('/mailverify',(req, res) =>{
             this.accountManagerService.verifyAccountEmail(req.query.token).then(data=>{

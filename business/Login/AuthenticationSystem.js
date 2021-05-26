@@ -4,6 +4,24 @@ const crypto = require('crypto');
 const JWT_SECRET = `0nHsn1*HrfFHa@hkC5pe20HHE5xTwh#P4u!%YWt%M#nhjpHxT5`;
 
 class AuthenticationSystem {
+
+    static async authenticate(inputPassword, instancePassword){
+        try {
+           let isValid = await bcrypt.compare(inputPassword, instancePassword);
+
+           if(isValid){
+            user.token = jwt.sign(user, JWT_SECRET, { expiresIn: '2h' });
+            return {
+                access:true,
+                account:user
+            }
+           }
+        } catch (error) {
+            console.error(error);
+        }
+        return {access:false};
+    }
+
     static async authenticate(inputPassword, instancePassword, user){
         
         try {
