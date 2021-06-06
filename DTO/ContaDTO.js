@@ -3,7 +3,8 @@ module.exports = class ContaDTO {
         return {
             password: conta.password,
             access: conta.access,
-            verified: false,
+            verified: conta.verified,
+            verifiedMail: conta.verifiedMail,
             verifyCode: token
         }
     }

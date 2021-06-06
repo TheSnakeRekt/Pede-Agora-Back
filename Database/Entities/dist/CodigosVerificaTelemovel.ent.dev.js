@@ -26,48 +26,36 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
-var Tamanho_Grupo = require("../Joins/Tamanho2Grupo.join");
-
-var Tamanho =
+var CodigosVerificaTelemovel =
 /*#__PURE__*/
 function (_Model) {
-  _inherits(Tamanho, _Model);
+  _inherits(CodigosVerificaTelemovel, _Model);
 
-  function Tamanho() {
-    _classCallCheck(this, Tamanho);
+  function CodigosVerificaTelemovel() {
+    _classCallCheck(this, CodigosVerificaTelemovel);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Tamanho).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(CodigosVerificaTelemovel).apply(this, arguments));
   }
 
-  _createClass(Tamanho, null, [{
+  _createClass(CodigosVerificaTelemovel, null, [{
     key: "init",
     value: function init(con) {
-      return _get(_getPrototypeOf(Tamanho), "init", this).call(this, {
+      return _get(_getPrototypeOf(CodigosVerificaTelemovel), "init", this).call(this, {
         id: {
           type: DataTypes.INTEGER,
           autoIncrement: true,
           primaryKey: true
         },
-        preco: {
-          type: DataTypes.DECIMAL(4, 2),
-          defaultValue: 0.00
+        req_id: DataTypes.STRING,
+        telefone: {
+          type: DataTypes.STRING,
+          unique: true
         },
-        "default": {
-          type: DataTypes.BOOLEAN,
-          defaultValue: false
-        },
-        nome: DataTypes.STRING
+        expiry: DataTypes.DATE,
+        validated: DataTypes.BOOLEAN
       }, {
         sequelize: con,
         timestamps: true
-      });
-    }
-  }, {
-    key: "associate",
-    value: function associate(db) {
-      db.Tamanho.belongsTo(db.Produto);
-      db.Tamanho.belongsToMany(db.GrupoTamanho, {
-        through: Tamanho_Grupo.define(db.sequelize)
       });
     }
   }, {
@@ -81,9 +69,7 @@ function (_Model) {
             case 0:
               _context.next = 2;
               return regeneratorRuntime.awrap(this.findOne({
-                where: {
-                  id: values.id
-                }
+                where: values
               }).then(function (obj) {
                 if (obj) return obj.update(values);
                 return _this.create(values);
@@ -101,7 +87,7 @@ function (_Model) {
     }
   }]);
 
-  return Tamanho;
+  return CodigosVerificaTelemovel;
 }(Model);
 
-module.exports = Tamanho;
+module.exports = CodigosVerificaTelemovel;

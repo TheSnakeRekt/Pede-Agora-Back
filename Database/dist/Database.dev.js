@@ -38,6 +38,8 @@ var OpcaoGrupoTamanho = require('./Entities/OpcaoGrupoTamanho.ent');
 
 var OpcaoGrupoProduto = require('./Entities/OpcaoGrupoProduto.ent');
 
+var CodigoVerificaTelemovel = require('./Entities/CodigosVerificaTelemovel.ent');
+
 var db = {};
 db.sequelize = con;
 db.Conta = Conta;
@@ -58,6 +60,7 @@ db.GrupoTamanho = GrupoTamanho;
 db.OpcaoGrupoTamanho = OpcaoGrupoTamanho;
 db.GrupoProduto = GrupoProduto;
 db.OpcaoGrupoProduto = OpcaoGrupoProduto;
+db.CodigosVerificaTelemovel = CodigoVerificaTelemovel;
 Conta.init(con);
 Restaurante.init(con);
 Cliente.init(con);
@@ -76,6 +79,7 @@ GrupoTamanho.init(con);
 OpcaoGrupoTamanho.init(con);
 GrupoProduto.init(con);
 OpcaoGrupoProduto.init(con);
+CodigoVerificaTelemovel.init(con);
 Conta.associate(db);
 Cliente.associate(db);
 Morada.associate(db);

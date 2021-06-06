@@ -83,11 +83,26 @@ class LoginController {
             });
         });
 
-        app.get('/phoneverify',(req, res) =>{
-            this.accountManagerService.verifyAccountPhone(req.body.codigo, req.body.telefone).then(data=>{
-                res.send(data);
-                res.end();
-            });
+        app.post('/phoneverify',async (req, res) =>{
+            let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
+
+            if(data){
+               data = await this.accountManagerService.requestCode(data.account.telefone);
+            }
+            
+            res.send(data);
+            res.end();
+        });
+
+        app.post('/validateNumber',async (req, res) =>{
+            let data = await this.accountManagerService.checkToken(req.headers['x-access-token']);
+            
+            if(data){
+               data = await this.accountManagerService.verifyPhone(data.account.telefone, req.body.code, data);
+            }
+            
+            res.send(data);
+            res.end();
         });
     }
 }

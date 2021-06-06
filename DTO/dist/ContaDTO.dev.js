@@ -6,29 +6,25 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var MoradaDTO = require("./MoradaDTO");
-
 module.exports =
 /*#__PURE__*/
 function () {
-  function UserDTO() {
-    _classCallCheck(this, UserDTO);
+  function ContaDTO() {
+    _classCallCheck(this, ContaDTO);
   }
 
-  _createClass(UserDTO, null, [{
+  _createClass(ContaDTO, null, [{
     key: "mapper",
-    value: function mapper(user) {
+    value: function mapper(conta, token) {
       return {
-        nome: user.nome,
-        telefone: user.telefone,
-        email: user.email,
-        nif: user.nif,
-        moradas: user.Moradas ? MoradaDTO.mapper(user.Moradas) : '',
-        token: user.token ? user.token : "",
-        verified: user.Contum ? user.Contum.verified : false
+        password: conta.password,
+        access: conta.access,
+        verified: conta.verified,
+        verifiedMail: conta.verifiedMail,
+        verifyCode: token
       };
     }
   }]);
 
-  return UserDTO;
+  return ContaDTO;
 }();

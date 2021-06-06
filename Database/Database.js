@@ -16,7 +16,7 @@ const GrupoTamanho = require('./Entities/GrupoTamanho.ent');
 const GrupoProduto = require('./Entities/GrupoProduto.ent');
 const OpcaoGrupoTamanho = require('./Entities/OpcaoGrupoTamanho.ent');
 const OpcaoGrupoProduto = require('./Entities/OpcaoGrupoProduto.ent');
-
+const CodigoVerificaTelemovel = require('./Entities/CodigosVerificaTelemovel.ent');
 
 const db = {};
 
@@ -39,8 +39,8 @@ db.Tamanho = Tamanho;
 db.GrupoTamanho = GrupoTamanho;
 db.OpcaoGrupoTamanho = OpcaoGrupoTamanho;
 db.GrupoProduto = GrupoProduto;
-db.OpcaoGrupoProduto = OpcaoGrupoProduto
-
+db.OpcaoGrupoProduto = OpcaoGrupoProduto;
+db.CodigosVerificaTelemovel = CodigoVerificaTelemovel;
 
 Conta.init(con);
 Restaurante.init(con);
@@ -60,6 +60,7 @@ GrupoTamanho.init(con);
 OpcaoGrupoTamanho.init(con);
 GrupoProduto.init(con);
 OpcaoGrupoProduto.init(con);
+CodigoVerificaTelemovel.init(con);
 
 Conta.associate(db);
 Cliente.associate(db);

@@ -10,7 +10,8 @@ class Conta extends Model{
             },
             access:DataTypes.STRING,
             password:DataTypes.STRING,
-            verified:DataTypes.BOOLEAN,
+            verified:{type:DataTypes.BOOLEAN,defaultValue:false},
+            verifiedMail:{type:DataTypes.BOOLEAN,defaultValue:false},
             verifyCode:DataTypes.STRING
         }, {sequelize: con, timestamps:true})
     }

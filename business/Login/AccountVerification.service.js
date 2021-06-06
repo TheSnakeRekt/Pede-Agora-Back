@@ -22,44 +22,50 @@ class AccountVerification {
     }
 
     sendVerificationPhone(phone) {
+      return new Promise((res,rej)=>{
         vonage.verify.request({
-            number: `351${phone}`,
-            brand: "Pede Agora"
-          }, (err, result) => {
-            if (err) {
-              console.error(err);
-            } else {
-              const verifyRequestId = result.request_id;
-              console.log('request_id', verifyRequestId);
-              return verifyRequestId;
-            }
-          });
+          number: phone,
+          brand: "Pede Agora"
+        }, (err, result) => {
+          if (err) {
+            console.error(err);
+            rej(err)
+          } else {
+            res(result)
+          }
+        });
+      });
     }
 
     checkVerification(verifyRequestId, input) {
+      
+       return new Promise((res,rej)=>{
+
+
         vonage.verify.check({
-            request_id: verifyRequestId,
-            code: input
-          }, (err, result) => {
-            if (err) {
-              console.error(err);
-            } else {
-              return result;
-            }
-          });
+          request_id: verifyRequestId,
+          code: input
+        }, (err, result) => {
+          if (err) {
+            console.error(err);
+            rej(error)
+          } else {
+            res(result);
+          }
+        });
+       })
     }
 
     async sendEmailVerification(email, nome, url) {
-        console.log(`http://localhost:3000/mailverify?token=${url}`)
+
         let mailBody = EmailBodyBuilder.getMailBody(nome,`http://localhost:3000/mailverify?token=${url}`);
 
         await transporter.sendMail({
-            from: 'no-reply@pedeagora.pt', // sender address
-            to: email, // list of receivers
-            subject: "Pede Agora - Verificação de Conta", // Subject line
-            html: mailBody, // html body
+            from: 'no-reply@pedeagora.pt',
+            to: email, 
+            subject: "Pede Agora - Verificação de Email", 
+            html: mailBody,
         }).then(data=>{
-          console.log('Mail Enviado')
         }).catch(e=>{
           console.error("Erro Mail: ",e);
         });

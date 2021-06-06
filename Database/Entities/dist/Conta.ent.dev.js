@@ -26,33 +26,37 @@ var _require = require("sequelize"),
     DataTypes = _require.DataTypes,
     Model = _require.Model;
 
-var Grupo =
+var Conta =
 /*#__PURE__*/
 function (_Model) {
-  _inherits(Grupo, _Model);
+  _inherits(Conta, _Model);
 
-  function Grupo() {
-    _classCallCheck(this, Grupo);
+  function Conta() {
+    _classCallCheck(this, Conta);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Grupo).apply(this, arguments));
+    return _possibleConstructorReturn(this, _getPrototypeOf(Conta).apply(this, arguments));
   }
 
-  _createClass(Grupo, null, [{
+  _createClass(Conta, null, [{
     key: "init",
     value: function init(con) {
-      return _get(_getPrototypeOf(Grupo), "init", this).call(this, {
+      return _get(_getPrototypeOf(Conta), "init", this).call(this, {
         id: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          primaryKey: true
+          type: DataTypes.UUID,
+          primaryKey: true,
+          defaultValue: DataTypes.UUIDV4
         },
-        force_max: DataTypes.INTEGER,
-        force_min: DataTypes.INTEGER,
-        required: {
+        access: DataTypes.STRING,
+        password: DataTypes.STRING,
+        verified: {
           type: DataTypes.BOOLEAN,
           defaultValue: false
         },
-        nome: DataTypes.STRING
+        verifiedMail: {
+          type: DataTypes.BOOLEAN,
+          defaultValue: false
+        },
+        verifyCode: DataTypes.STRING
       }, {
         sequelize: con,
         timestamps: true
@@ -61,10 +65,9 @@ function (_Model) {
   }, {
     key: "associate",
     value: function associate(db) {
-      db.Grupo.belongsTo(db.Categoria);
-      db.Grupo.hasMany(db.Opcao, {
-        as: 'Opcoes'
-      });
+      db.Conta.hasOne(db.Cliente);
+      db.Conta.hasOne(db.Entregador);
+      db.Conta.hasOne(db.Restaurante);
     }
   }, {
     key: "createOrUpdate",
@@ -77,9 +80,7 @@ function (_Model) {
             case 0:
               _context.next = 2;
               return regeneratorRuntime.awrap(this.findOne({
-                where: {
-                  id: values.id
-                }
+                where: values
               }).then(function (obj) {
                 if (obj) return obj.update(values);
                 return _this.create(values);
@@ -97,7 +98,7 @@ function (_Model) {
     }
   }]);
 
-  return Grupo;
+  return Conta;
 }(Model);
 
-module.exports = Grupo;
+module.exports = Conta;

@@ -8,7 +8,8 @@ module.exports = class UserDTO {
             email:user.email,
             nif:user.nif,
             moradas:user.Moradas ? MoradaDTO.mapper(user.Moradas) : '',
-            token:user.token ? user.token : ``
+            token:user.token ? user.token : ``,
+            verified:user.Contum ? user.Contum.verified : false
         }
     }
 }
