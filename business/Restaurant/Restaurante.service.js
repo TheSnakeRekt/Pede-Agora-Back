@@ -12,14 +12,20 @@ class RestauranteService {
 
     async findAll(){
         this.restauranteRepository.sync();
-        const restaurantes = await this.restauranteRepository.findAll({include:db.Morada});
+        const restaurantes = await this.restauranteRepository.findAll({include:[
+            {model:db.Morada},
+            {model:db.ZonaEntrega}
+        ]});
         
         return restaurantes.map(RestauranteDTO.mapper);
     }
 
     async findOne(id){
         this.restauranteRepository.sync();
-        const restaurante = await this.restauranteRepository.findOne({where:{id:id},include:db.Morada});
+        const restaurante = await this.restauranteRepository.findOne({where:{id:id}, include:[
+            {model:db.Morada},
+            {model:db.ZonaEntrega}
+        ]});
         
         return RestauranteDTO.mapper(restaurante);
     }

@@ -1,4 +1,5 @@
 const {DataTypes, Model} = require("sequelize");
+const Restaurante_Zona = require("../Joins/Restaurante2ZonaEntrega.join");
 
 class Restaurante extends Model {
     static init(con){
@@ -27,6 +28,7 @@ class Restaurante extends Model {
         db.Restaurante.belongsTo(db.Conta);
         db.Restaurante.hasMany(db.Pedido);
         db.Restaurante.hasMany(db.Menu);
+        db.Restaurante.belongsToMany(db.ZonaEntrega, {through:Restaurante_Zona.define(db.sequelize)});
     }
 
     static async createOrUpdate(values){

@@ -1,5 +1,9 @@
+const ZonaDTO = require("./ZonasDTO");
+
 module.exports = class RestauranteDTO {
+   
     static mapper(restauranteEntity){
+
        return{
         id:restauranteEntity.id,
         nome:restauranteEntity.nome,
@@ -19,13 +23,8 @@ module.exports = class RestauranteDTO {
                 lat:restauranteEntity.Morada.latitude,
                 lng:restauranteEntity.Morada.longitude,
             }
-        }
+        },
+        zonas:restauranteEntity.ZonaEntregas ? restauranteEntity.ZonaEntregas.flatMap(ZonaDTO.mapper) : []
        };
-    }
-
-    static mealMapper(restauranteEntity){
-        return{
-            
-        }
     }
 }

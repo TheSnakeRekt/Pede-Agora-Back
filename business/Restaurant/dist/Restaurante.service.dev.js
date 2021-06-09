@@ -34,7 +34,11 @@ function () {
               this.restauranteRepository.sync();
               _context.next = 3;
               return regeneratorRuntime.awrap(this.restauranteRepository.findAll({
-                include: db.Morada
+                include: [{
+                  model: db.Morada
+                }, {
+                  model: db.ZonaEntrega
+                }]
               }));
 
             case 3:
@@ -62,7 +66,11 @@ function () {
                 where: {
                   id: id
                 },
-                include: db.Morada
+                include: [{
+                  model: db.Morada
+                }, {
+                  model: db.ZonaEntrega
+                }]
               }));
 
             case 3:

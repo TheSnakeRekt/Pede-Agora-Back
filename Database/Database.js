@@ -1,3 +1,5 @@
+const con = require('./DatabaseCon');
+
 const Cliente = require('./Entities/Cliente.ent')
 const { Entregador, PosicaoEntregador } = require('./Entities/Entregador.ent');
 const Menu = require('./Entities/Menu.ent');
@@ -8,7 +10,7 @@ const Restaurante = require('./Entities/Restaurante.ent');
 const Categoria = require('./Entities/Categoria.ent');
 const Grupo = require('./Entities/Grupo.ent');
 
-const con = require('./DatabaseCon');
+
 const Conta = require('./Entities/Conta.ent');
 const Opcao = require('./Entities/Opcao.ent');
 const Tamanho = require('./Entities/Tamanho.ent');
@@ -17,6 +19,7 @@ const GrupoProduto = require('./Entities/GrupoProduto.ent');
 const OpcaoGrupoTamanho = require('./Entities/OpcaoGrupoTamanho.ent');
 const OpcaoGrupoProduto = require('./Entities/OpcaoGrupoProduto.ent');
 const CodigoVerificaTelemovel = require('./Entities/CodigosVerificaTelemovel.ent');
+const ZonaEntrega = require('./Entities/ZonaEntrega.ent');
 
 const db = {};
 
@@ -41,6 +44,7 @@ db.OpcaoGrupoTamanho = OpcaoGrupoTamanho;
 db.GrupoProduto = GrupoProduto;
 db.OpcaoGrupoProduto = OpcaoGrupoProduto;
 db.CodigosVerificaTelemovel = CodigoVerificaTelemovel;
+db.ZonaEntrega = ZonaEntrega;
 
 Conta.init(con);
 Restaurante.init(con);
@@ -61,6 +65,7 @@ OpcaoGrupoTamanho.init(con);
 GrupoProduto.init(con);
 OpcaoGrupoProduto.init(con);
 CodigoVerificaTelemovel.init(con);
+ZonaEntrega.init(con);
 
 Conta.associate(db);
 Cliente.associate(db);
@@ -80,6 +85,7 @@ GrupoTamanho.associate(db);
 OpcaoGrupoTamanho.associate(db);
 GrupoProduto.associate(db);
 OpcaoGrupoProduto.associate(db);
+ZonaEntrega.associate(db);
 
 db.sequelize.sync({ alter: true }).catch(err=>{
     console.error(err.sql);

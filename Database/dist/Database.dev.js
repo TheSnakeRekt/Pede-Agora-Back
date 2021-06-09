@@ -1,5 +1,7 @@
 "use strict";
 
+var con = require('./DatabaseCon');
+
 var Cliente = require('./Entities/Cliente.ent');
 
 var _require = require('./Entities/Entregador.ent'),
@@ -22,8 +24,6 @@ var Categoria = require('./Entities/Categoria.ent');
 
 var Grupo = require('./Entities/Grupo.ent');
 
-var con = require('./DatabaseCon');
-
 var Conta = require('./Entities/Conta.ent');
 
 var Opcao = require('./Entities/Opcao.ent');
@@ -39,6 +39,8 @@ var OpcaoGrupoTamanho = require('./Entities/OpcaoGrupoTamanho.ent');
 var OpcaoGrupoProduto = require('./Entities/OpcaoGrupoProduto.ent');
 
 var CodigoVerificaTelemovel = require('./Entities/CodigosVerificaTelemovel.ent');
+
+var ZonaEntrega = require('./Entities/ZonaEntrega.ent');
 
 var db = {};
 db.sequelize = con;
@@ -61,6 +63,7 @@ db.OpcaoGrupoTamanho = OpcaoGrupoTamanho;
 db.GrupoProduto = GrupoProduto;
 db.OpcaoGrupoProduto = OpcaoGrupoProduto;
 db.CodigosVerificaTelemovel = CodigoVerificaTelemovel;
+db.ZonaEntrega = ZonaEntrega;
 Conta.init(con);
 Restaurante.init(con);
 Cliente.init(con);
@@ -80,6 +83,7 @@ OpcaoGrupoTamanho.init(con);
 GrupoProduto.init(con);
 OpcaoGrupoProduto.init(con);
 CodigoVerificaTelemovel.init(con);
+ZonaEntrega.init(con);
 Conta.associate(db);
 Cliente.associate(db);
 Morada.associate(db);
@@ -98,6 +102,7 @@ GrupoTamanho.associate(db);
 OpcaoGrupoTamanho.associate(db);
 GrupoProduto.associate(db);
 OpcaoGrupoProduto.associate(db);
+ZonaEntrega.associate(db);
 db.sequelize.sync({
   alter: true
 })["catch"](function (err) {
