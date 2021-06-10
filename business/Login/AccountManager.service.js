@@ -61,7 +61,8 @@ class AccountManagerService extends AuthenticationSystem {
         let password = await AuthenticationSystem.createPassword(data.password);
         let user = SigninDTO.mapper(data, password);
         user.Morada.geo = await this.locationFinderService.findGeoLoc(user.Morada);
-     
+        user.Morada.default = true;
+        
         let alreadyExists = await this.clienteRepository.findOne({where:Sequelize.or({email: user.Utilizador.email}, {telefone:user.Utilizador.telefone}),raw:true});
         
    

@@ -22,7 +22,8 @@ class Morada extends Model {
             isRestaurant:{
                 type:DataTypes.BOOLEAN,
                 defaultValue:false
-            }
+            },
+            default:DataTypes.BOOLEAN
         }, {sequelize:con, timestamps:true});
     }
 

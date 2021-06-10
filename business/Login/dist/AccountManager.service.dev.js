@@ -188,7 +188,8 @@ function (_AuthenticationSystem) {
 
             case 7:
               user.Morada.geo = _context3.sent;
-              _context3.next = 10;
+              user.Morada["default"] = true;
+              _context3.next = 11;
               return regeneratorRuntime.awrap(this.clienteRepository.findOne({
                 where: Sequelize.or({
                   email: user.Utilizador.email
@@ -198,50 +199,50 @@ function (_AuthenticationSystem) {
                 raw: true
               }));
 
-            case 10:
+            case 11:
               alreadyExists = _context3.sent;
 
               if (!alreadyExists) {
-                _context3.next = 13;
+                _context3.next = 14;
                 break;
               }
 
               return _context3.abrupt("return", false);
 
-            case 13:
+            case 14:
               token = AuthenticationSystem.randomToken();
-              _context3.next = 16;
+              _context3.next = 17;
               return regeneratorRuntime.awrap(this.contaRepository.create(ContaDTO.mapper(user.Conta, token)));
 
-            case 16:
+            case 17:
               conta = _context3.sent;
-              _context3.next = 19;
+              _context3.next = 20;
               return regeneratorRuntime.awrap(this.clienteRepository.create(UserDTO.mapper(user.Utilizador)));
 
-            case 19:
+            case 20:
               userInstance = _context3.sent;
-              _context3.next = 22;
+              _context3.next = 23;
               return regeneratorRuntime.awrap(this.moradaRepository.build(MoradaDTO.mapper(user.Morada)));
 
-            case 22:
+            case 23:
               morada = _context3.sent;
-              _context3.next = 25;
+              _context3.next = 26;
               return regeneratorRuntime.awrap(morada[0].save());
 
-            case 25:
-              _context3.next = 27;
+            case 26:
+              _context3.next = 28;
               return regeneratorRuntime.awrap(userInstance.setContum(conta));
 
-            case 27:
-              _context3.next = 29;
+            case 28:
+              _context3.next = 30;
               return regeneratorRuntime.awrap(userInstance.addMorada(morada[0]));
 
-            case 29:
+            case 30:
               userInstance.MoradaId = morada[0].id;
-              _context3.next = 32;
+              _context3.next = 33;
               return regeneratorRuntime.awrap(userInstance.save());
 
-            case 32:
+            case 33:
               userDTO = AuthenticationSystem.sign(UserDTO.mapper(userInstance));
               userDTO.morada = MoradaDTO.mapper(morada);
               this.accountVerificationService.sendEmailVerification(userInstance.email, userInstance.nome, token);
@@ -250,7 +251,7 @@ function (_AuthenticationSystem) {
                 account: userDTO
               });
 
-            case 36:
+            case 37:
             case "end":
               return _context3.stop();
           }

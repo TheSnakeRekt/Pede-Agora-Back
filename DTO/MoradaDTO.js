@@ -12,7 +12,8 @@ module.exports = class MoradaDTO {
                     distrito: moradaEntity.get().distrito ? moradaEntity.get().distrito: '',
                     pais: moradaEntity.get().pais ? moradaEntity.get().pais : 'PT',
                     latitude:moradaEntity.get().geo ?  moradaEntity.get().geo.lat : moradaEntity.get().latitude,
-                    longitude:moradaEntity.get().geo ? moradaEntity.get().geo.lng : moradaEntity.get().longitude
+                    longitude:moradaEntity.get().geo ? moradaEntity.get().geo.lng : moradaEntity.get().longitude,
+                    default:moradaEntity.get().default
                };
             });
         }
@@ -25,7 +26,8 @@ module.exports = class MoradaDTO {
             distrito: moradaEntity.distrito ? moradaEntity.distrito: '',
             pais: moradaEntity.pais ? moradaEntity.pais : 'PT',
             latitude:moradaEntity.geo ?  moradaEntity.geo.lat : moradaEntity.latitude,
-            longitude:moradaEntity.geo ? moradaEntity.geo.lng : moradaEntity.longitude
+            longitude:moradaEntity.geo ? moradaEntity.geo.lng : moradaEntity.longitude,
+            default:moradaEntity.default
        }];
     }
 }
