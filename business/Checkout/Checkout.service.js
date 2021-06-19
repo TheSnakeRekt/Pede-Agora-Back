@@ -9,10 +9,8 @@ class CheckoutService {
         this.locationFinderService = locationFinderService;
     }
 
-    async distance(cart){
-        let restaurant = await this.restaurantRepository.findOne({where:{id:cart.restaurant.id}}, {include:Morada});
-
-        return this.locationFinderService.calculateDistanceInMeters(restaurant.Morada, cart.cliente);
+    async distance(moradaRestaurant,morada){
+        return this.locationFinderService.calculateDistanceInMeters(moradaRestaurant, morada);
     }
 }
 

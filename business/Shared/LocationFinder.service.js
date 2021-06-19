@@ -19,17 +19,29 @@ class LocationFinderService {
     }
 
     calculateDistanceInMeters = (from = {}, to = {}) =>{
-        let theta = from.longitude - to.longitude;
-        let dist = Math.sin(this.toRadians(from.latitude)) * Math.sin(this.toRadians(to.latitude)) + Math.cos(this.toRadians(from.latitude)) * Math.cos(this.toRadians(to.latitude)) * Math.cos(this.toRadians(theta));
-        dist = Math.acos(dist);
-        let miles = dist * 60 * 1.1515;
-
-        return Math.round(miles * 1609.344);
+        return this.getDistanceFromLatLonInKm(from.geo?.lat, from.geo?.lng, to.latitude, to.longitude);
     }
 
-    toRadians (angle) {
-        return angle * (Math.PI / 180);
+    deg2rad(deg) {
+        return deg * (Math.PI/180)
     }
+
+    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        var R = 6371;
+        var dLat = Number(this.deg2rad(lat2-lat1).toFixed(15));  
+        var dLon = Number(this.deg2rad(lon2-lon1).toFixed(15)); 
+        var a = 
+          Number((Math.sin(dLat/2) * Math.sin(dLat/2)).toFixed(15)) +
+          Number(Math.cos(this.deg2rad(lat1)).toFixed(15)) * Number(Math.cos(this.deg2rad(lat2)).toFixed(15)) * 
+          Number(Math.sin(dLon/2).toFixed(15)) * Number(Math.sin(dLon/2).toFixed(15))
+          ; 
+        var c = 2 * Math.atan2(Math.sqrt(a).toFixed(15), Math.sqrt(1-a)).toFixed(15); 
+        var d = R * c; 
+
+        return d.toFixed(2);
+    }
+      
+
 }
 
 module.exports = new LocationFinderService(axios);

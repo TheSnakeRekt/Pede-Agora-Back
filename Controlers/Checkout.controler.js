@@ -9,10 +9,11 @@ class CheckoutControler {
     }
 
     checkoutRestAdapter = (app) => {
-        app.post('/checkout', async (req, res)=>{
-           const data = await this.checkoutControler.findAll();
-           res.send(data);
-           res.end()
+        app.post('/orders/getDistance', async (req, res)=>{
+            const data = await this.checkoutControlerService.distance(req.body.restaurante, req.body.morada);
+            console.log(data)
+            res.send(`${data}`);
+            res.end()
         });
     }
 }
